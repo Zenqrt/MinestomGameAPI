@@ -1,12 +1,21 @@
 package dev.zenqrt.game
 
-import dev.zenqrt.game.condition.StartCondition
-import dev.zenqrt.game.condition.StartConditionImpl
-import net.minestom.server.instance.InstanceContainer
+abstract class Game(val options: GameOptions) {
+    val active: Boolean = false
+    private val players = mutableListOf<GamePlayer>()
 
-open class Game(startCondition: StartCondition = StartConditionImpl(), ): StartCondition by startCondition {
-    val instance: InstanceContainer ?= null
+    fun join(gamePlayer: GamePlayer): Boolean {
+        return players.add(gamePlayer)
+    }
 
-    open fun tick() {}
+    fun leave(gamePlayer: GamePlayer): Boolean {
+        return players.remove(gamePlayer)
+    }
+
+    fun canStart(): Boolean {
+        return players.size >= options.minPlayers
+    }
+
+    abstract fun start()
 
 }

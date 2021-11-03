@@ -14,6 +14,7 @@ repositories {
 }
 
 dependencies {
+    implementation("org.testng:testng:7.1.0")
     testImplementation("org.jetbrains.kotlin:kotlin-test:1.5.31")
 
     implementation("com.github.Minestom", "Minestom", "cbc87a2a68")
