@@ -1,6 +1,3 @@
 package dev.zenqrt.game
 
-class GameOptions(
-    val maxPlayers: Int,
-    val minPlayers: Int) {
-}
+data class GameOptions(val maxPlayers: Int, val minPlayers: Int)

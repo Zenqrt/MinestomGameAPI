@@ -1,21 +1,39 @@
 package dev.zenqrt.game
 
-abstract class Game(val options: GameOptions) {
-    val active: Boolean = false
-    private val players = mutableListOf<GamePlayer>()
+import dev.zenqrt.game.phase.GameActivePhase
+import dev.zenqrt.game.phase.TimerPhase
+import dev.zenqrt.game.state.GameActiveState
+import dev.zenqrt.game.state.GameState
+import dev.zenqrt.game.state.TimerState
+import net.minestom.server.Tickable
 
-    fun join(gamePlayer: GamePlayer): Boolean {
-        return players.add(gamePlayer)
+class Game(val options: GameOptions,
+           countdownPhase: TimerPhase,
+           gamePhase: GameActivePhase,
+           endingPhase: TimerPhase) : Tickable {
+
+    val players = mutableListOf<GamePlayer>()
+
+    private val states = mutableListOf(TimerState(countdownPhase), GameActiveState(gamePhase), TimerState(endingPhase))
+    private var currentState: GameState ?= null
+
+    private fun canStart(): Boolean = this.players.size >= options.minPlayers
+
+    override fun tick(time: Long) {
+        if(currentState == null) {
+            if(states.size == 0 || !canStart()) return
+        } else {
+            currentState!!.tick()
+
+            if(currentState!!.shouldEnd()) {
+                states.remove(currentState)
+
+                if(states.size == 0) {
+                    players.clear()
+                } else {
+                    currentState = states[0]
+                }
+            }
+        }
     }
-
-    fun leave(gamePlayer: GamePlayer): Boolean {
-        return players.remove(gamePlayer)
-    }
-
-    fun canStart(): Boolean {
-        return players.size >= options.minPlayers
-    }
-
-    abstract fun start()
-
 }

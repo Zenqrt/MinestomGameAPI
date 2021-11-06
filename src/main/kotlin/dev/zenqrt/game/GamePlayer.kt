@@ -1,4 +1,6 @@
 package dev.zenqrt.game
 
-class GamePlayer {
+import net.minestom.server.entity.Player
+
+class GamePlayer(val player: Player) {
 }

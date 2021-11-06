@@ -1,13 +1,5 @@
 package dev.zenqrt.game
 
-class GameManager {
-    val games = mutableListOf<Game>()
+class GameManager(private val registry: GameRegistry = GameRegistry()) : Registry<Game> by registry {
 
-    fun register(game: Game) {
-        games.add(game)
-    }
-
-    fun unregister(game: Game) {
-        games.remove(game)
-    }
 }
