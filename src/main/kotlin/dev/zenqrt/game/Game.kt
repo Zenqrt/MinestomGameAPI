@@ -5,6 +5,7 @@ import dev.zenqrt.game.phase.TimerPhase
 import dev.zenqrt.game.state.GameActiveState
 import dev.zenqrt.game.state.GameState
 import dev.zenqrt.game.state.TimerState
+import net.minestom.server.Tickable
 
 class Game(val options: GameOptions,
            countdownPhase: TimerPhase,
