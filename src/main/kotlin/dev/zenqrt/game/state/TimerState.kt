@@ -2,7 +2,7 @@ package dev.zenqrt.game.state
 
 import dev.zenqrt.game.phase.TimerPhase
 
-class TimerState(private val phase: TimerPhase) : GameState {
+internal class TimerState(private val phase: TimerPhase) : GameState {
     private var timeLeft = phase.time
 
     override fun tick() {

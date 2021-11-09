@@ -1,6 +1,6 @@
 package dev.zenqrt.game.state
 
-sealed interface GameState {
+internal interface GameState {
     fun tick()
     fun shouldEnd(): Boolean
 }
