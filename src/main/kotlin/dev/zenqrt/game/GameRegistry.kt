@@ -2,14 +2,16 @@ package dev.zenqrt.game
 
 class GameRegistry : Registry<Game> {
 
-    private val games = mutableListOf<Game>()
+    private val games = mutableMapOf<String, Game>()
 
-    override fun register(obj: Game) {
-        games.add(obj)
+    override fun register(key: String, obj: Game) {
+        games[key] = obj
     }
 
-    override fun unregister(obj: Game) {
-        games.remove(obj)
+    override fun unregister(key: String, obj: Game) {
+        games.remove(key)
     }
+
+    override fun find(key: String): Game? = games[key]
 
 }

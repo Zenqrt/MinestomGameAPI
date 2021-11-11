@@ -1,6 +1,7 @@
 package dev.zenqrt.game
 
-sealed interface Registry<T> {
-    fun register(obj: T)
-    fun unregister(obj: T)
+internal sealed interface Registry<T> {
+    fun register(key: String, obj: T)
+    fun unregister(key: String, obj: T)
+    fun find(key: String): T?
 }

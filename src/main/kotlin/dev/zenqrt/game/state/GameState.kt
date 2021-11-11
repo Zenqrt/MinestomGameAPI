@@ -1,6 +1,7 @@
 package dev.zenqrt.game.state
 
-internal interface GameState {
+import dev.zenqrt.game.timer.Endable
+
+internal interface GameState : Endable {
     fun tick()
-    fun shouldEnd(): Boolean
 }
