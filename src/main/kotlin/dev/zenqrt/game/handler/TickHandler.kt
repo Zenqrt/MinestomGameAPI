@@ -1,6 +1,9 @@
 package dev.zenqrt.game.handler
 
 import dev.zenqrt.game.timer.Endable
-import net.minestom.server.Tickable
+import dev.zenqrt.game.timer.Tickable
 
-interface TickHandler : Tickable, Endable
+abstract class TickHandler : Tickable, Endable {
+    internal var active = false
+    abstract fun shouldStart(): Boolean
+}

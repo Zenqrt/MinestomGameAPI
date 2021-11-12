@@ -2,18 +2,23 @@ package dev.zenqrt.game
 
 import dev.zenqrt.game.handler.GamePlayerHandler
 import dev.zenqrt.game.handler.TickHandler
-import net.minestom.server.Tickable
+import dev.zenqrt.game.timer.Tickable
 
-class Game(private val gamePlayerHandler: GamePlayerHandler,
-           private val tickHandler: TickHandler) : Tickable, GamePlayerHandler by gamePlayerHandler {
+open class Game(private val gamePlayerHandler: GamePlayerHandler,
+                private val tickHandler: TickHandler) : Tickable, GamePlayerHandler by gamePlayerHandler {
 
     var offline = false
         private set
 
-    override fun tick(time: Long) {
+    override fun tick() {
         if(offline) return
-        tickHandler.tick(time)
-    }
 
-    fun isOffline(): Boolean = this.offline
+        if(tickHandler.shouldStart()) {
+            tickHandler.active = true
+        }
+
+        if(tickHandler.active) {
+            tickHandler.tick()
+        }
+    }
 }

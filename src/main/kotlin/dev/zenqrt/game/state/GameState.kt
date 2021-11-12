@@ -2,6 +2,6 @@ package dev.zenqrt.game.state
 
 import dev.zenqrt.game.timer.Endable
 
-internal interface GameState : Endable {
+interface GameState : Endable {
     fun tick()
 }
