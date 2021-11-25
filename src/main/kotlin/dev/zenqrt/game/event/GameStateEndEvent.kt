@@ -1,6 +1,7 @@
 package dev.zenqrt.game.event
 
 import dev.zenqrt.game.Game
-import dev.zenqrt.game.state.GameState
+import dev.zenqrt.game.event.trait.GameStateEvent
+import dev.zenqrt.game.phase.GamePhase
 
-class GameStateEndEvent(game: Game, state: GameState) : GameStateEvent(game, state)
+class GameStateEndEvent(override val game: Game, override val gameState: GamePhase) : GameStateEvent

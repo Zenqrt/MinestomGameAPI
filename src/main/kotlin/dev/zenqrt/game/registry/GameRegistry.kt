@@ -1,11 +1,13 @@
-package dev.zenqrt.game
+package dev.zenqrt.game.registry
 
-class GameRegistry : Registry<Game> {
+import dev.zenqrt.game.Game
 
+class GameRegistry : Registry<String, Game> {
     private val games = mutableMapOf<String, Game>()
 
     override fun register(key: String, obj: Game) {
         games[key] = obj
+        obj.init()
     }
 
     override fun unregister(key: String, obj: Game) {
