@@ -7,5 +7,6 @@ open class Game(private val gamePlayerHandler: GamePlayerHandler,
 
     internal open fun init() {
     }
-
 }
+
+data class GameOptions(val maxPlayers: Int, val minPlayers: Int)
