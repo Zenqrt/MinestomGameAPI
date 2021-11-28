@@ -7,7 +7,6 @@ class GameRegistry : Registry<String, Game> {
 
     override fun register(key: String, obj: Game) {
         games[key] = obj
-        obj.init()
     }
 
     override fun unregister(key: String, obj: Game) {

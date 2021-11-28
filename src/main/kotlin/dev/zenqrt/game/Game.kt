@@ -1,12 +1,7 @@
 package dev.zenqrt.game
 
-import dev.zenqrt.game.handler.GamePlayerHandler
+import dev.zenqrt.game.phase.GamePhase
 
-open class Game(private val gamePlayerHandler: GamePlayerHandler,
-) : GamePlayerHandler by gamePlayerHandler {
-
-    internal open fun init() {
-    }
+abstract class Game(private val gamePlayerHandler: GamePlayerHandler) : GamePlayerHandler by gamePlayerHandler {
+    abstract val startingPhase: GamePhase
 }
-
-data class GameOptions(val maxPlayers: Int, val minPlayers: Int)
