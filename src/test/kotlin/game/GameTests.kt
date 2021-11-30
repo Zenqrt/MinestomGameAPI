@@ -2,6 +2,7 @@ package game
 
 import game.player.FakeGamePlayer
 import io.kotest.core.spec.style.ShouldSpec
+import io.kotest.core.spec.style.shouldSpec
 import io.kotest.matchers.maps.shouldContain
 import net.minestom.server.MinecraftServer
 
@@ -13,11 +14,17 @@ class GameTests : ShouldSpec({
         val game = TestGame()
         game.startingPhase.start()
 
-        should("insert player to players list") {
+        shouldSpec {
             val gamePlayer = FakeGamePlayer("test")
-            game.insertPlayer(gamePlayer, game)
 
-            game.players shouldContain Pair(gamePlayer.player.uuid, gamePlayer)
+            should("insert player to players list") {
+                game.insertPlayer(gamePlayer, game)
+                game.players shouldContain Pair(gamePlayer.player.uuid, gamePlayer)
+            }
+
+            should("kick player for leaving game") {
+                game.removePlayer(gamePlayer, game)
+            }
         }
     }
 
