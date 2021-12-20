@@ -1,18 +1,18 @@
 package game.phase
 
-import dev.zenqrt.game.Game
 import dev.zenqrt.game.phase.GamePhase
-import net.kyori.adventure.text.Component
-import net.minestom.server.MinecraftServer
+import game.TestGame
+import net.minestom.server.event.player.PlayerStartSprintingEvent
 
-class EndingTestPhase(private val game: Game) : GamePhase("ending") {
+class EndingTestPhase(game: TestGame) : GamePhase("ending") {
+
     override fun start() {
-        MinecraftServer.getSchedulerManager()
-            .buildTask { changePhase() }
-            .schedule()
-    }
+        eventNode.addListener(PlayerStartSprintingEvent::class.java) {
 
+
+        }
+    }
     override fun end() {
-        game.players.forEach { it.value.player.kick("Game has ended!") }
+        TODO("Not yet implemented")
     }
 }

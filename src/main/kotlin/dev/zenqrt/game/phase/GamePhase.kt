@@ -18,8 +18,8 @@ abstract class GamePhase(name: String) {
 
     fun changePhase() {
         end()
-        nextPhase()?.start()
         MinecraftServer.getGlobalEventHandler().removeChild(eventNode)
+        nextPhase()?.start()
     }
 
     inline fun <reified T : Event> listenPhaseChangeCondition(crossinline condition: (T) -> Boolean): EventListener.Builder<T> = EventListener.builder(T::class.java)

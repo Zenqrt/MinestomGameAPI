@@ -1,6 +1,5 @@
 package dev.zenqrt.game
 
-import net.kyori.adventure.audience.Audience
-import net.minestom.server.entity.Player
+import java.util.*
 
-open class GamePlayer(val player: Player, var currentGame: Game? = null) : Audience by player
+open class GamePlayer(val uuid: UUID = UUID.randomUUID(), var currentGame: Game? = null)
