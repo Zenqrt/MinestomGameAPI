@@ -11,6 +11,7 @@ abstract class GamePhase(name: String) {
 
     init {
         MinecraftServer.getGlobalEventHandler().addChild(eventNode)
+        println("Initializing...")
     }
 
     abstract fun start()

@@ -5,6 +5,7 @@ import game.player.AccessibleFakePlayer
 import io.kotest.core.spec.style.ShouldSpec
 import io.kotest.matchers.collections.shouldNotContain
 import io.kotest.matchers.floats.shouldBeExactly
+import io.kotest.matchers.ints.shouldBeExactly
 import net.minestom.server.MinecraftServer
 import java.util.*
 
@@ -40,9 +41,23 @@ class GameEventTests : ShouldSpec({
                 MinecraftServer.getGlobalEventHandler().children shouldNotContain eventNode
             }
 
-            should("set all player additional hearts to 10F when the game ends") {
+            should("set all player additional hearts to 10F when the phase ends") {
                 game.gamePlayers.forEach {
                     it.key.additionalHearts shouldBeExactly 10F }
+            }
+
+            should("set player level to 5 upon sneaking") {
+                val firstPlayer = game.gamePlayers.keys.first()
+                firstPlayer.chat("Test message")
+
+                firstPlayer.level shouldBeExactly 5
+            }
+
+            should("clear player list upon sprinting") {
+                val firstPlayer = game.gamePlayers.keys.first()
+                firstPlayer.isSprinting = true
+
+                game.gamePlayers.size shouldBeExactly 0
             }
         }
     }
