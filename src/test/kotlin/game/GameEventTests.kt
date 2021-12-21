@@ -6,7 +6,9 @@ import io.kotest.core.spec.style.ShouldSpec
 import io.kotest.matchers.collections.shouldNotContain
 import io.kotest.matchers.floats.shouldBeExactly
 import io.kotest.matchers.ints.shouldBeExactly
+import io.kotest.matchers.shouldBe
 import net.minestom.server.MinecraftServer
+import net.minestom.server.entity.damage.DamageType
 import java.util.*
 
 class GameEventTests : ShouldSpec({
@@ -46,16 +48,16 @@ class GameEventTests : ShouldSpec({
                     it.key.additionalHearts shouldBeExactly 10F }
             }
 
-            should("set player level to 5 upon sneaking") {
+            should("set player glowing to true upon damage") {
                 val firstPlayer = game.gamePlayers.keys.first()
-                firstPlayer.chat("Test message")
+                firstPlayer.damage(DamageType.VOID, 1F)
 
-                firstPlayer.level shouldBeExactly 5
+                firstPlayer.isGlowing shouldBe true
             }
 
-            should("clear player list upon sprinting") {
+            should("clear player list upon death") {
                 val firstPlayer = game.gamePlayers.keys.first()
-                firstPlayer.isSprinting = true
+                firstPlayer.kill()
 
                 game.gamePlayers.size shouldBeExactly 0
             }
