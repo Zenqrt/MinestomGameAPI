@@ -16,8 +16,5 @@ class GamePlayerFilter<T : PlayerEvent>(private val game: Game) : Predicate<T> {
 }
 
 class GameEntityPlayerFilter<T : EntityEvent>(private val game: Game) : Predicate<T> {
-    override fun test(t: T): Boolean {
-        if(t.entity !is Player) return false
-        return game.gamePlayers.containsKey(t.entity as Player)
-    }
+    override fun test(t: T): Boolean = if(t.entity !is Player) false else game.gamePlayers.containsKey(t.entity as Player)
 }
