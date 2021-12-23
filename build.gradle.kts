@@ -19,11 +19,19 @@ repositories {
 dependencies {
     implementation("org.testng:testng:7.4.0")
 
-    testImplementation("io.kotest:kotest-assertions-core:5.0.1")
-    testImplementation("io.kotest:kotest-runner-junit5:5.0.1")
+    testImplementation("io.kotest:kotest-assertions-core:5.0.2")
+    testImplementation("io.kotest:kotest-runner-junit5:5.0.2")
 
     implementation("com.github.Minestom:Minestom:1.18-SNAPSHOT")
     implementation("net.kyori:adventure-text-minimessage:4.1.0-SNAPSHOT")
+}
+
+publishing {
+    repositories {
+        maven {
+            name = "MinestomGameAPI"
+        }
+    }
 }
 
 tasks {
