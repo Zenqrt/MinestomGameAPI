@@ -1,14 +1,13 @@
 package dev.zenqrt.game.api.phase
 
-import dev.zenqrt.game.api.phase.phase.PhaseTrait
+import dev.zenqrt.game.api.phase.trait.PhaseTrait
 import net.minestom.server.MinecraftServer
 import net.minestom.server.event.Event
 import net.minestom.server.event.EventListener
 import net.minestom.server.event.EventNode
 
-abstract class GamePhase(name: String) {
+abstract class GamePhase(name: String, val eventNode: EventNode<Event> = EventNode.all(name)) {
     open val nextPhase: () -> GamePhase? = { null }
-    val eventNode: EventNode<Event> = EventNode.all(name)
 
     init {
         MinecraftServer.getGlobalEventHandler().addChild(eventNode)

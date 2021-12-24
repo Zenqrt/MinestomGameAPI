@@ -5,7 +5,7 @@ import dev.zenqrt.game.api.event.GamePlayerLeaveEvent
 import dev.zenqrt.game.api.event.GamePlayerPostJoinEvent
 import dev.zenqrt.game.api.event.filter.GameFilter
 import dev.zenqrt.game.api.phase.GamePhase
-import dev.zenqrt.game.api.phase.phase.MaxPlayersEventTrait
+import dev.zenqrt.game.api.phase.trait.MaxPlayerLimitCancelEventTrait
 import game.TestGame
 import net.minestom.server.event.EventListener
 
@@ -27,7 +27,7 @@ class WaitingTestPhase(private val game: TestGame) : GamePhase("waiting") {
             .handler { it.player.heal() }
             .build())
 
-        addTrait(MaxPlayersEventTrait(eventNode, EventListener.builder(GamePlayerJoinEvent::class.java), game, maxPlayers))
+        addTrait(MaxPlayerLimitCancelEventTrait(eventNode, EventListener.builder(GamePlayerJoinEvent::class.java), game, maxPlayers))
     }
 
     override fun end() {

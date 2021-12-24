@@ -9,6 +9,5 @@ import net.minestom.server.entity.Player
 class GamePlayerPostJoinEvent(override val game: Game,
                               override val gamePlayer: GamePlayer,
                               private val playerEntity: Player) : GameEvent, GamePlayerEvent {
-
     override fun getPlayer(): Player = playerEntity
 }
