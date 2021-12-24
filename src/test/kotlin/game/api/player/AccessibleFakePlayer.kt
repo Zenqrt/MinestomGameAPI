@@ -1,4 +1,4 @@
-package game.player
+package game.api.player
 
 import net.minestom.server.entity.fakeplayer.FakePlayer
 import net.minestom.server.entity.fakeplayer.FakePlayerOption

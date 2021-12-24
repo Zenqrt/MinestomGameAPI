@@ -1,8 +1,8 @@
-package game
+package game.api
 
 import dev.zenqrt.game.api.GamePlayer
 import dev.zenqrt.game.api.registry.GamePlayerRegistry
-import game.player.AccessibleFakePlayer
+import game.api.player.AccessibleFakePlayer
 import io.kotest.core.spec.style.ShouldSpec
 import io.kotest.matchers.maps.shouldContain
 import io.kotest.matchers.maps.shouldNotContain

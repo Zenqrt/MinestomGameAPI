@@ -1,8 +1,8 @@
-package game.phase
+package game.api.phase
 
 import dev.zenqrt.game.api.event.filter.GameEntityPlayerFilter
 import dev.zenqrt.game.api.phase.GamePhase
-import game.TestGame
+import game.api.TestGame
 import net.minestom.server.event.EventListener
 import net.minestom.server.event.entity.EntityDamageEvent
 import net.minestom.server.event.entity.EntityDeathEvent

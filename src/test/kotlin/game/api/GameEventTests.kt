@@ -1,7 +1,7 @@
-package game
+package game.api
 
 import dev.zenqrt.game.api.GamePlayer
-import game.player.AccessibleFakePlayer
+import game.api.player.AccessibleFakePlayer
 import io.kotest.core.spec.style.ShouldSpec
 import io.kotest.matchers.collections.shouldNotContain
 import io.kotest.matchers.floats.shouldBeExactly

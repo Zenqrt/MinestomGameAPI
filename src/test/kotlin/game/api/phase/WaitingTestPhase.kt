@@ -1,4 +1,4 @@
-package game.phase
+package game.api.phase
 
 import dev.zenqrt.game.api.event.GamePlayerJoinEvent
 import dev.zenqrt.game.api.event.GamePlayerLeaveEvent
@@ -6,7 +6,7 @@ import dev.zenqrt.game.api.event.GamePlayerPostJoinEvent
 import dev.zenqrt.game.api.event.filter.GameFilter
 import dev.zenqrt.game.api.phase.GamePhase
 import dev.zenqrt.game.api.phase.trait.MaxPlayerLimitCancelEventTrait
-import game.TestGame
+import game.api.TestGame
 import net.minestom.server.event.EventListener
 
 class WaitingTestPhase(private val game: TestGame) : GamePhase("waiting") {

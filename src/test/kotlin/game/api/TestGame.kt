@@ -1,8 +1,8 @@
-package game
+package game.api
 
 import dev.zenqrt.game.api.Game
 import dev.zenqrt.game.api.GamePlayerHandlerImpl
-import game.phase.WaitingTestPhase
+import game.api.phase.WaitingTestPhase
 import net.minestom.server.coordinate.Pos
 
 class TestGame : Game(GamePlayerHandlerImpl()) {
