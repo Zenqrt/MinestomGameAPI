@@ -1,20 +1,21 @@
 package game.phase
 
-import dev.zenqrt.game.event.GamePlayerJoinEvent
-import dev.zenqrt.game.event.GamePlayerLeaveEvent
-import dev.zenqrt.game.event.GamePlayerPostJoinEvent
-import dev.zenqrt.game.event.filter.GameFilter
-import dev.zenqrt.game.phase.GamePhase
+import dev.zenqrt.game.api.event.GamePlayerJoinEvent
+import dev.zenqrt.game.api.event.GamePlayerLeaveEvent
+import dev.zenqrt.game.api.event.GamePlayerPostJoinEvent
+import dev.zenqrt.game.api.event.filter.GameFilter
+import dev.zenqrt.game.api.phase.GamePhase
+import dev.zenqrt.game.api.phase.phase.MaxPlayersEventTrait
 import game.TestGame
 import net.minestom.server.event.EventListener
 
 class WaitingTestPhase(private val game: TestGame) : GamePhase("waiting") {
     override val nextPhase = { EndingTestPhase(game) }
+    private val maxPlayers = 4
 
     override fun start() {
-        eventNode.addListener(listenPhaseChangeCondition<GamePlayerPostJoinEvent> { it.game.gamePlayers.size >= 4 }
-            .filter(GameFilter(game))
-            .build())
+        listenPhaseChangeCondition(EventListener.builder(GamePlayerPostJoinEvent::class.java)
+            .filter(GameFilter(game))) { it.game.gamePlayers.size >= maxPlayers }
 
         eventNode.addListener(EventListener.builder(GamePlayerJoinEvent::class.java)
             .filter(GameFilter(game))
@@ -25,6 +26,8 @@ class WaitingTestPhase(private val game: TestGame) : GamePhase("waiting") {
             .filter(GameFilter(game))
             .handler { it.player.heal() }
             .build())
+
+        addTrait(MaxPlayersEventTrait(eventNode, EventListener.builder(GamePlayerJoinEvent::class.java), game, maxPlayers))
     }
 
     override fun end() {

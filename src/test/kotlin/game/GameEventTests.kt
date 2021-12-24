@@ -1,6 +1,6 @@
 package game
 
-import dev.zenqrt.game.GamePlayer
+import dev.zenqrt.game.api.GamePlayer
 import game.player.AccessibleFakePlayer
 import io.kotest.core.spec.style.ShouldSpec
 import io.kotest.matchers.collections.shouldNotContain
