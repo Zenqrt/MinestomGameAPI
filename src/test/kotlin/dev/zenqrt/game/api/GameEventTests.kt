@@ -1,7 +1,6 @@
-package game.api
+package dev.zenqrt.game.api
 
-import dev.zenqrt.game.api.GamePlayer
-import game.api.player.AccessibleFakePlayer
+import dev.zenqrt.game.api.player.AccessibleFakePlayer
 import io.kotest.core.spec.style.ShouldSpec
 import io.kotest.matchers.collections.shouldNotContain
 import io.kotest.matchers.floats.shouldBeExactly
@@ -20,8 +19,8 @@ class GameEventTests : ShouldSpec({
         game.startingPhase.start()
 
         context("GamePlayer") {
-            val gamePlayer = GamePlayer()
             val player = AccessibleFakePlayer(UUID.randomUUID(), "test_player")
+            val gamePlayer = game.createPlayer(player)
 
             should("set player health to 5 HP upon insertion") {
                 game.insertPlayer(gamePlayer, player, game)
@@ -37,7 +36,8 @@ class GameEventTests : ShouldSpec({
                 val eventNode = game.startingPhase.eventNode
 
                 for(i in 1..4) {
-                    game.insertPlayer(GamePlayer(), AccessibleFakePlayer(UUID.randomUUID(), "test_player$i"), game)
+                    val fakePlayer = AccessibleFakePlayer(UUID.randomUUID(), "test_player$i")
+                    game.insertPlayer(game.createPlayer(fakePlayer), fakePlayer, game)
                 }
 
                 MinecraftServer.getGlobalEventHandler().children shouldNotContain eventNode

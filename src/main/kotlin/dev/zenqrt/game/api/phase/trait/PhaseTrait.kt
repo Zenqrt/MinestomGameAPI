@@ -1,6 +1,7 @@
 package dev.zenqrt.game.api.phase.trait
 
 import dev.zenqrt.game.api.Game
+import dev.zenqrt.game.api.GamePlayer
 import dev.zenqrt.game.api.event.GamePlayerJoinEvent
 import net.minestom.server.event.Event
 import net.minestom.server.event.EventListener
@@ -21,9 +22,10 @@ open class CancelEventTrait<T : CancellableEvent>(eventNode: EventNode<Event>, p
     }
 }
 
-class MaxPlayerLimitCancelEventTrait(eventNode: EventNode<Event>, eventBuilder: EventListener.Builder<GamePlayerJoinEvent>,
-                                     private val game: Game, private val maxPlayers: Int) : CancelEventTrait<GamePlayerJoinEvent>(eventNode, eventBuilder) {
+class MaxPlayerLimitCancelEventTrait<T : CancellableEvent>(eventNode: EventNode<Event>, eventBuilder: EventListener.Builder<T>,
+                                     private val game: Game<out GamePlayer>, private val maxPlayers: Int) : CancelEventTrait<T>(eventNode, eventBuilder) {
     init {
-        eventBuilder.filter { game.gamePlayers.size > maxPlayers }
+        eventBuilder
+            .filter { game.gamePlayers.size > maxPlayers }
     }
 }

@@ -2,7 +2,6 @@ package dev.zenqrt.game.api.registry
 
 import dev.zenqrt.game.api.Game
 import dev.zenqrt.game.api.GamePlayer
-import java.util.*
 
 sealed class MappedRegistry<K,V> : Registry<K,V> {
     private val map = mutableMapOf<K,V>()
@@ -19,5 +18,4 @@ sealed class MappedRegistry<K,V> : Registry<K,V> {
 
 }
 
-class GameRegistry : MappedRegistry<String, Game>()
-class GamePlayerRegistry : MappedRegistry<UUID, GamePlayer>()
+class GameRegistry : MappedRegistry<String, Game<out GamePlayer>>()

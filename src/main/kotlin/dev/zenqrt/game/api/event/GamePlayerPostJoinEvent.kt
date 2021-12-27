@@ -6,7 +6,7 @@ import dev.zenqrt.game.api.event.trait.GameEvent
 import dev.zenqrt.game.api.event.trait.GamePlayerEvent
 import net.minestom.server.entity.Player
 
-class GamePlayerPostJoinEvent(override val game: Game,
+class GamePlayerPostJoinEvent(override val game: Game<out GamePlayer>,
                               override val gamePlayer: GamePlayer,
                               private val playerEntity: Player) : GameEvent, GamePlayerEvent {
     override fun getPlayer(): Player = playerEntity

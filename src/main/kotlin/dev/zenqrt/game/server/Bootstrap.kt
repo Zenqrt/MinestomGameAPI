@@ -11,7 +11,7 @@ object MinestomServer {
 
         MojangAuth.init()
         OptifineSupport.enable()
-        MinestomGameAPI.init()
+        MinestomGameAPI.init() // currently useless
 
         minecraftServer.start("0.0.0.0", 25565)
     }

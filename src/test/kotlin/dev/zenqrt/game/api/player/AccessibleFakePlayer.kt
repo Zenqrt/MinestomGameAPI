@@ -1,4 +1,4 @@
-package game.api.player
+package dev.zenqrt.game.api.player
 
 import net.minestom.server.entity.fakeplayer.FakePlayer
 import net.minestom.server.entity.fakeplayer.FakePlayerOption

@@ -7,11 +7,12 @@ import dev.zenqrt.game.api.event.filter.GameFilter
 import dev.zenqrt.game.api.phase.GamePhase
 import dev.zenqrt.game.api.phase.trait.MaxPlayerLimitCancelEventTrait
 import dev.zenqrt.game.christmas.chat.ChristmasTextFormatter
+import dev.zenqrt.game.christmas.game.ChristmasGame
 import dev.zenqrt.game.christmas.game.GameOptions
 import dev.zenqrt.game.christmas.phase.trait.PlayerCountBossBarPhaseTrait
 import net.minestom.server.event.EventListener
 
-class WaitingPhase(private val game: Game, private val gameOptions: GameOptions, private val messageFormatter: ChristmasTextFormatter) : GamePhase("waiting") {
+class WaitingPhase(private val game: ChristmasGame, private val gameOptions: GameOptions, private val messageFormatter: ChristmasTextFormatter) : GamePhase("waiting") {
     override val nextPhase = { CountdownPhase(game, gameOptions, messageFormatter) }
 
     override fun start() {

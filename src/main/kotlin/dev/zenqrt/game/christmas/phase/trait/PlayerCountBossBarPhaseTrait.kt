@@ -1,6 +1,7 @@
 package dev.zenqrt.game.christmas.phase.trait
 
 import dev.zenqrt.game.api.Game
+import dev.zenqrt.game.api.GamePlayer
 import dev.zenqrt.game.api.chat.TextFormatter
 import dev.zenqrt.game.api.event.GamePlayerPostJoinEvent
 import dev.zenqrt.game.api.event.GamePlayerPostLeaveEvent
@@ -14,7 +15,7 @@ import net.minestom.server.event.Event
 import net.minestom.server.event.EventListener
 import net.minestom.server.event.EventNode
 
-class PlayerCountBossBarPhaseTrait(private val game: Game, private val eventNode: EventNode<Event>, private val messageFormatter: TextFormatter<String>, private val maxPlayers: Int,) : PhaseTrait {
+class PlayerCountBossBarPhaseTrait(private val game: Game<out GamePlayer>, private val eventNode: EventNode<Event>, private val messageFormatter: TextFormatter<String>, private val maxPlayers: Int,) : PhaseTrait {
     private val playerCountBossBar = BossBar.bossBar(getPlayerCountText(game.gamePlayers.size), getPlayerCountProgress(game.gamePlayers.size), BossBar.Color.BLUE, BossBar.Overlay.PROGRESS)
 
     override fun handleTrait() {

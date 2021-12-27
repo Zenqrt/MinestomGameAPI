@@ -7,7 +7,7 @@ import dev.zenqrt.game.api.event.trait.GamePlayerEvent
 import net.minestom.server.entity.Player
 import net.minestom.server.event.trait.CancellableEvent
 
-class GamePlayerJoinEvent(override val game: Game, override val gamePlayer: GamePlayer, private val playerEntity: Player) : GameEvent, GamePlayerEvent, CancellableEvent {
+class GamePlayerJoinEvent(override val game: Game<out GamePlayer>, override val gamePlayer: GamePlayer, private val playerEntity: Player) : GameEvent, GamePlayerEvent, CancellableEvent {
     private var cancel = false
 
     override fun isCancelled(): Boolean = cancel

@@ -2,10 +2,11 @@ package dev.zenqrt.game.api
 
 import net.minestom.server.entity.Player
 
-interface GamePlayerHandler {
-    val gamePlayers: MutableMap<Player, GamePlayer>
+interface GamePlayerHandler<T : GamePlayer> {
+    val gamePlayers: MutableMap<Player, T>
 
-    fun insertPlayer(gamePlayer: GamePlayer, player: Player, game: Game): Boolean
-    fun removePlayer(gamePlayer: GamePlayer, player: Player, game: Game): Boolean
-    fun updatePlayer(gamePlayer: GamePlayer, player: Player): Boolean
+    fun insertPlayer(gamePlayer: T, player: Player, game: Game<T>): Boolean
+    fun removePlayer(gamePlayer: T, player: Player, game: Game<T>): Boolean
+    fun updatePlayer(gamePlayer: T, player: Player): Boolean
+    fun createPlayer(player: Player): T
 }

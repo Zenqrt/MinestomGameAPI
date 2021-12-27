@@ -9,16 +9,16 @@ import net.minestom.server.entity.Player
 import net.minestom.server.event.Event
 import net.minestom.server.event.trait.CancellableEvent
 
-class GamePlayerHandlerImpl : GamePlayerHandler {
-    override val gamePlayers = mutableMapOf<Player, GamePlayer>()
+abstract class AbstractGamePlayerHandler<T : GamePlayer> : GamePlayerHandler<T> {
+    override val gamePlayers = mutableMapOf<Player, T>()
 
-    override fun insertPlayer(gamePlayer: GamePlayer, player: Player, game: Game): Boolean =
+    override fun insertPlayer(gamePlayer: T, player: Player, game: Game<T>): Boolean =
         handlePlayerOperation(GamePlayerJoinEvent(game, gamePlayer, player), GamePlayerPostJoinEvent(game, gamePlayer, player)) {
             gamePlayer.currentGame = game
             gamePlayers[player] = gamePlayer
         }
 
-    override fun removePlayer(gamePlayer: GamePlayer, player: Player, game: Game): Boolean =
+    override fun removePlayer(gamePlayer: T, player: Player, game: Game<T>): Boolean =
         handlePlayerOperation(GamePlayerLeaveEvent(game, gamePlayer, player), GamePlayerPostLeaveEvent(game, gamePlayer, player)) {
             gamePlayers.remove(player)
             gamePlayer.currentGame = null
@@ -36,7 +36,7 @@ class GamePlayerHandlerImpl : GamePlayerHandler {
         return cancellableEvent.isCancelled
     }
 
-    override fun updatePlayer(gamePlayer: GamePlayer, player: Player): Boolean {
+    override fun updatePlayer(gamePlayer: T, player: Player): Boolean {
         return try {
             gamePlayers[player] = gamePlayer
             true
