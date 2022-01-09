@@ -10,6 +10,7 @@ import net.minestom.server.event.trait.CancellableEvent
 
 interface PhaseTrait {
     fun handleTrait()
+    fun endTrait() {}
 }
 
 abstract class EventTrait(val eventNode: EventNode<Event>): PhaseTrait

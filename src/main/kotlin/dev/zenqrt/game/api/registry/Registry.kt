@@ -1,6 +1,6 @@
 package dev.zenqrt.game.api.registry
 
-sealed interface Registry<K,V> {
+interface Registry<K,V> {
     fun register(key: K, obj: V)
     fun unregister(key: K, obj: V)
     fun find(key: K): V?

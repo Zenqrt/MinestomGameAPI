@@ -12,6 +12,10 @@ class WaitingTestPhase(private val game: TestGame) : GamePhase("waiting") {
     override val nextPhase = { EndingTestPhase(game) }
     private val maxPlayers = 4
 
+    init {
+        addAllEventNodes()
+    }
+
     override fun start() {
         listenPhaseChangeCondition(EventListener.builder(GamePlayerPostJoinEvent::class.java)
             .filter(GameFilter(game))) { it.game.gamePlayers.size >= maxPlayers }
@@ -31,5 +35,7 @@ class WaitingTestPhase(private val game: TestGame) : GamePhase("waiting") {
 
     override fun end() {
         game.gamePlayers.forEach { it.key.additionalHearts = 10F }
+        switchAllNextPhaseEventNodes()
+        endTraits()
     }
 }

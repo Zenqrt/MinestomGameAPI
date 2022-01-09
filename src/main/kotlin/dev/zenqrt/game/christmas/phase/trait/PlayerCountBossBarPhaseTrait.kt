@@ -11,19 +11,26 @@ import dev.zenqrt.game.api.phase.trait.PhaseTrait
 import net.kyori.adventure.bossbar.BossBar
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.minimessage.MiniMessage
+import net.minestom.server.entity.Player
 import net.minestom.server.event.Event
 import net.minestom.server.event.EventListener
 import net.minestom.server.event.EventNode
 
-class PlayerCountBossBarPhaseTrait(private val game: Game<out GamePlayer>, private val eventNode: EventNode<Event>, private val messageFormatter: TextFormatter<String>, private val maxPlayers: Int,) : PhaseTrait {
+class PlayerCountBossBarPhaseTrait(private val game: Game<out GamePlayer>,
+                                   private val eventNode: EventNode<Event>,
+                                   private val messageFormatter: TextFormatter<String>,
+                                   private val maxPlayers: Int) : PhaseTrait {
     private val playerCountBossBar = BossBar.bossBar(getPlayerCountText(game.gamePlayers.size), getPlayerCountProgress(game.gamePlayers.size), BossBar.Color.BLUE, BossBar.Overlay.PROGRESS)
+    private val miniMessage = MiniMessage.get()
 
     override fun handleTrait() {
-        addUpdatePlayerListener<GamePlayerPostJoinEvent> {
-            it.game.broadcastMessage(MiniMessage.get().parse(messageFormatter.formatMessage("${messageFormatter.formatUsername(it.player.username)} joined the game!")))
-        }
-        addUpdatePlayerListener<GamePlayerPostLeaveEvent> {
-            it.game.broadcastMessage(MiniMessage.get().parse(messageFormatter.formatMessage("${messageFormatter.formatMessage(it.player.username)} left the game!")))
+        addBroadcastPlayerActivityListener<GamePlayerPostJoinEvent>("joined") { it.player }
+        addBroadcastPlayerActivityListener<GamePlayerPostLeaveEvent>("left") { it.player }
+    }
+
+    private inline fun <reified T : GameEvent> addBroadcastPlayerActivityListener(activityMessage: String, crossinline player: (T) -> Player) {
+        addUpdatePlayerListener<T> {
+            it.game.sendMessage(miniMessage.parse(messageFormatter.formatMessage("${messageFormatter.formatUsername(player.invoke(it).username)} $activityMessage the game!")))
         }
     }
 
@@ -33,11 +40,11 @@ class PlayerCountBossBarPhaseTrait(private val game: Game<out GamePlayer>, priva
             .filter(GameFilter(game))
             .handler {
                 handler.invoke(it)
-                updatePlayerCountBossbar()
+                updatePlayerCountBossBar()
             }.build())
     }
 
-    private fun updatePlayerCountBossbar() {
+    private fun updatePlayerCountBossBar() {
         val playerCount = game.gamePlayers.size
         playerCountBossBar.name(getPlayerCountText(playerCount))
         playerCountBossBar.progress(getPlayerCountProgress(playerCount))

@@ -6,30 +6,81 @@ import net.minestom.server.event.Event
 import net.minestom.server.event.EventListener
 import net.minestom.server.event.EventNode
 
-abstract class GamePhase(name: String, val eventNode: EventNode<Event> = EventNode.all(name)) {
+abstract class GamePhase(name: String, open val eventNode: EventNode<Event> = EventNode.all(name), open val phaseChangeEventNode: EventNode<Event> = EventNode.all("$name-phase_change")) {
     open val nextPhase: () -> GamePhase? = { null }
-
-    init {
-        MinecraftServer.getGlobalEventHandler().addChild(eventNode)
-    }
+    private val traits = mutableListOf<PhaseTrait>()
+    private val globalEventNode = MinecraftServer.getGlobalEventHandler()
+    private var _nextPhase: GamePhase? = null
 
     abstract fun start()
     abstract fun end()
 
-    fun changePhase() {
+    fun switchNextPhase() {
+        _nextPhase = nextPhase()
         end()
-        MinecraftServer.getGlobalEventHandler().removeChild(eventNode)
-        nextPhase()?.start()
+        _nextPhase?.start()
+    }
+
+    fun switchNextPhaseEventNode() {
+        _nextPhase?.addPhaseEventNode()
+        removePhaseEventNode()
+    }
+
+    fun switchNextPhaseChangeEventNode() {
+        _nextPhase?.addPhaseChangeEventNode()
+        removePhaseChangeEventNode()
+    }
+
+    fun switchAllNextPhaseEventNodes() {
+        _nextPhase?.addAllEventNodes()
+        removeAllEventNodes()
     }
 
     fun addTrait(trait: PhaseTrait)  {
+        traits.add(trait)
         trait.handleTrait()
     }
 
+    fun removeTrait(trait: PhaseTrait) {
+        traits.remove(trait)
+        trait.endTrait()
+    }
+
+    fun endTraits() {
+        traits.forEach { it.endTrait() }
+    }
+
+    fun addPhaseEventNode() {
+        globalEventNode.addChild(eventNode)
+    }
+
+    fun addPhaseChangeEventNode() {
+        globalEventNode.addChild(phaseChangeEventNode)
+    }
+
+    fun addAllEventNodes() {
+        addPhaseEventNode()
+        addPhaseChangeEventNode()
+    }
+
+    fun removePhaseEventNode() {
+        globalEventNode.removeChild(eventNode)
+    }
+
+    fun removePhaseChangeEventNode() {
+        globalEventNode.removeChild(phaseChangeEventNode)
+    }
+
+    fun removeAllEventNodes() {
+        removePhaseEventNode()
+        removePhaseChangeEventNode()
+    }
+
+
     inline fun <reified T : Event> listenPhaseChangeCondition(eventBuilder: EventListener.Builder<T>, crossinline condition: (T) -> Boolean) {
-        eventNode.addListener(eventBuilder
+        phaseChangeEventNode.addListener(eventBuilder
             .filter { condition(it) }
-            .handler { changePhase() }
+            .handler { switchNextPhase() }
             .build())
     }
 }

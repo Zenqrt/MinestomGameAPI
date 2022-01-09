@@ -14,21 +14,23 @@ abstract class AbstractGamePlayerHandler<T : GamePlayer> : GamePlayerHandler<T> 
 
     override fun insertPlayer(gamePlayer: T, player: Player, game: Game<T>): Boolean =
         handlePlayerOperation(GamePlayerJoinEvent(game, gamePlayer, player), GamePlayerPostJoinEvent(game, gamePlayer, player)) {
+            game.players.add(player)
             gamePlayer.currentGame = game
             gamePlayers[player] = gamePlayer
         }
 
     override fun removePlayer(gamePlayer: T, player: Player, game: Game<T>): Boolean =
         handlePlayerOperation(GamePlayerLeaveEvent(game, gamePlayer, player), GamePlayerPostLeaveEvent(game, gamePlayer, player)) {
+            game.players.remove(player)
             gamePlayers.remove(player)
             gamePlayer.currentGame = null
         }
 
-    private fun handlePlayerOperation(event: CancellableEvent, postEvent: Event, handler: () -> Unit): Boolean {
+    private fun handlePlayerOperation(event: CancellableEvent, postEvent: Event, handler: () -> Unit): Boolean = this.let {
         if(validateCancellation(event)) return false
         handler.invoke()
         MinecraftServer.getGlobalEventHandler().call(postEvent)
-        return true
+        true
     }
 
     private fun validateCancellation(cancellableEvent: CancellableEvent) : Boolean {

@@ -16,7 +16,7 @@ class GameEventTests : ShouldSpec({
 
     context("Game") {
         val game = TestGame()
-        game.startingPhase.start()
+        game.startGame()
 
         context("GamePlayer") {
             val player = AccessibleFakePlayer(UUID.randomUUID(), "test_player")
