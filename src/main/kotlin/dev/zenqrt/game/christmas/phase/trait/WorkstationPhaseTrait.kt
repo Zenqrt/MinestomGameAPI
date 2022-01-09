@@ -18,6 +18,7 @@ import net.minestom.server.event.EventListener
 import net.minestom.server.event.EventNode
 import net.minestom.server.event.player.PlayerEntityInteractEvent
 import net.minestom.server.instance.Instance
+import world.cepi.kstom.event.listen
 import java.io.File
 
 class WorkstationPhaseTrait(private val eventNode: EventNode<Event>, private val game: ChristmasGame) : PhaseTrait {
@@ -47,11 +48,9 @@ class WorkstationPhaseTrait(private val eventNode: EventNode<Event>, private val
     private fun fromJson(name: String): List<WorkstationInteractionBox> = Json.decodeFromString(File("./src/main/resources/workstations/$name.json").readText())
 
     private fun addInteractionListeners() {
-        eventNode.addListener(EventListener.builder(PlayerEntityInteractEvent::class.java)
-            .filter(GamePlayerFilter(game))
-            .handler { event ->
-                val entity = interactionEntities[event.target]
-                entity?.handler?.useStation(event.player)
-            }.build())
+        eventNode.listen<PlayerEntityInteractEvent> {
+            filters += GamePlayerFilter(game)
+            handler { interactionEntities[this.target]?.handler?.useStation(this.player) }
+        }
     }
 }

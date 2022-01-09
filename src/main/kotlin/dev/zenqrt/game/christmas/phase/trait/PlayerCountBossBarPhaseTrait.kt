@@ -15,6 +15,7 @@ import net.minestom.server.entity.Player
 import net.minestom.server.event.Event
 import net.minestom.server.event.EventListener
 import net.minestom.server.event.EventNode
+import world.cepi.kstom.event.listen
 
 class PlayerCountBossBarPhaseTrait(private val game: Game<out GamePlayer>,
                                    private val eventNode: EventNode<Event>,
@@ -35,13 +36,14 @@ class PlayerCountBossBarPhaseTrait(private val game: Game<out GamePlayer>,
     }
 
     private inline fun <reified T : GameEvent> addUpdatePlayerListener(crossinline handler: (T) -> Unit) {
-        eventNode.addListener(
-            EventListener.builder(T::class.java)
-            .filter(GameFilter(game))
-            .handler {
-                handler.invoke(it)
+        eventNode.listen<T> {
+            filters += GameFilter(game)
+
+            handler {
+                handler(this)
                 updatePlayerCountBossBar()
-            }.build())
+            }
+        }
     }
 
     private fun updatePlayerCountBossBar() {

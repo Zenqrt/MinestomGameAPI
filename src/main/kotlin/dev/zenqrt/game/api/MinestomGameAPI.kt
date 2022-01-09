@@ -1,10 +1,9 @@
 package dev.zenqrt.game.api
 
-import dev.zenqrt.game.api.registry.GameRegistry
+import dev.zenqrt.game.api.registry.GameRegistryService
 
 object MinestomGameAPI {
-    val gameRegistry = GameRegistry()
-
+    val gameRegistry = GameRegistryService()
     fun init() {
     }
 

@@ -3,7 +3,7 @@ package dev.zenqrt.game.api.registry
 import dev.zenqrt.game.api.Game
 import dev.zenqrt.game.api.GamePlayer
 
-open class MappedRegistry<K,V> : Registry<K,V> {
+open class MappedRegistryService<K,V> : RegistryService<K,V> {
     private val map = mutableMapOf<K,V>()
 
     override fun register(key: K, obj: V) {
@@ -18,4 +18,4 @@ open class MappedRegistry<K,V> : Registry<K,V> {
 
 }
 
-class GameRegistry : MappedRegistry<String, Game<out GamePlayer>>()
+class GameRegistryService : MappedRegistryService<Int, Game<out GamePlayer>>()

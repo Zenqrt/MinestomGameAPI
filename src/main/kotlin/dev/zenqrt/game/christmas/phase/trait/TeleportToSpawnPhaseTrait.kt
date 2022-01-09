@@ -11,12 +11,13 @@ import net.minestom.server.event.Event
 import net.minestom.server.event.EventListener
 import net.minestom.server.event.EventNode
 import net.minestom.server.instance.Instance
+import world.cepi.kstom.event.listen
 
 class TeleportToSpawnPhaseTrait(private val eventNode: EventNode<Event>, private val game: ChristmasGame, private val instance: Instance, private val pos: Pos) : PhaseTrait {
     override fun handleTrait() {
-        eventNode.addListener(EventListener.builder(GamePlayerPostJoinEvent::class.java)
-            .filter(GameFilter(game))
-            .handler { it.player.teleport(instance, pos) }
-            .build())
+        eventNode.listen<GamePlayerPostJoinEvent> {
+            filters += GameFilter(game)
+            handler { this.player.teleport(instance, pos) }
+        }
     }
 }

@@ -7,6 +7,7 @@ import dev.zenqrt.game.api.event.GamePlayerPostJoinEvent
 import dev.zenqrt.game.api.event.filter.GameFilter
 import dev.zenqrt.game.api.phase.trait.MaxPlayerLimitCancelEventTrait
 import net.minestom.server.event.EventListener
+import world.cepi.kstom.event.listen
 
 class WaitingTestPhase(private val game: TestGame) : GamePhase("waiting") {
     override val nextPhase = { EndingTestPhase(game) }
@@ -20,15 +21,15 @@ class WaitingTestPhase(private val game: TestGame) : GamePhase("waiting") {
         listenPhaseChangeCondition(EventListener.builder(GamePlayerPostJoinEvent::class.java)
             .filter(GameFilter(game))) { it.game.gamePlayers.size >= maxPlayers }
 
-        eventNode.addListener(EventListener.builder(GamePlayerJoinEvent::class.java)
-            .filter(GameFilter(game))
-            .handler { it.player.health = 5f }
-            .build())
+        eventNode.listen<GamePlayerJoinEvent> {
+            filters += GameFilter(game)
+            handler { this.player.health = 5F }
+        }
 
-        eventNode.addListener(EventListener.builder(GamePlayerLeaveEvent::class.java)
-            .filter(GameFilter(game))
-            .handler { it.player.heal() }
-            .build())
+        eventNode.listen<GamePlayerLeaveEvent> {
+            filters += GameFilter(game)
+            handler { this.player.heal() }
+        }
 
         addTrait(MaxPlayerLimitCancelEventTrait(eventNode, EventListener.builder(GamePlayerJoinEvent::class.java), game, maxPlayers))
     }

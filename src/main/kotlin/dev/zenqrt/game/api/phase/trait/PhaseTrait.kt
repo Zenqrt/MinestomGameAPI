@@ -26,7 +26,6 @@ open class CancelEventTrait<T : CancellableEvent>(eventNode: EventNode<Event>, p
 class MaxPlayerLimitCancelEventTrait<T : CancellableEvent>(eventNode: EventNode<Event>, eventBuilder: EventListener.Builder<T>,
                                      private val game: Game<out GamePlayer>, private val maxPlayers: Int) : CancelEventTrait<T>(eventNode, eventBuilder) {
     init {
-        eventBuilder
-            .filter { game.gamePlayers.size > maxPlayers }
+        eventBuilder.filter { game.gamePlayers.size > maxPlayers }
     }
 }

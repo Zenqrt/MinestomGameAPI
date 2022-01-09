@@ -28,7 +28,7 @@ class WaitingPhase(private val game: ChristmasGame, private val gameOptions: Gam
     private fun registerTraits() {
         addTrait(MaxPlayerLimitCancelEventTrait(eventNode, EventListener.builder(GamePlayerJoinEvent::class.java), game, gameOptions.maxPlayers))
         addTrait(PlayerCountBossBarPhaseTrait(game, eventNode, textFormatter, gameOptions.maxPlayers))
-        addTrait(TeleportToSpawnPhaseTrait(eventNode, game, game.instance, game.spawnPos))
+        addTrait(TeleportToSpawnPhaseTrait(eventNode, game, game.instance, game.christmasMapWorld.spawnPos))
     }
 
     override fun end() {

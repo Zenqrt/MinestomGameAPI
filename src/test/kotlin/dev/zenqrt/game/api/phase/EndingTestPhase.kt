@@ -8,6 +8,7 @@ import net.minestom.server.event.EventListener
 import net.minestom.server.event.entity.EntityDamageEvent
 import net.minestom.server.event.entity.EntityDeathEvent
 import net.minestom.server.event.player.PlayerDeathEvent
+import world.cepi.kstom.event.listen
 
 class EndingTestPhase(private val game: TestGame) : GamePhase("ending") {
 
@@ -15,10 +16,10 @@ class EndingTestPhase(private val game: TestGame) : GamePhase("ending") {
         listenPhaseChangeCondition(EventListener.builder(PlayerDeathEvent::class.java)
             .filter(GamePlayerFilter(game))) { true }
 
-        eventNode.addListener(EventListener.builder(EntityDamageEvent::class.java)
-            .filter(GameEntityPlayerFilter(game))
-            .handler { it.entity.isGlowing = true }
-            .build())
+        eventNode.listen<EntityDamageEvent> {
+            filters += GameEntityPlayerFilter(game)
+            handler { this.entity.isGlowing = true }
+        }
         addTrait(TestPhaseTrait(game))
     }
 
