@@ -1,5 +1,7 @@
 package dev.zenqrt.game.christmas.phase
 
+import dev.zenqrt.game.api.Game
+import dev.zenqrt.game.api.GamePlayer
 import dev.zenqrt.game.api.event.GamePlayerPostJoinEvent
 import dev.zenqrt.game.api.event.filter.GameFilter
 import dev.zenqrt.game.api.phase.GamePhase
@@ -17,28 +19,33 @@ import net.minestom.server.sound.SoundEvent
 import java.time.Duration
 
 class CountdownPhase(override val eventNode: EventNode<Event>, private val game: ChristmasGame, private val gameOptions: GameOptions, private val textFormatter: ChristmasTextFormatter) : GamePhase("countdown") {
-    override val nextPhase = { if(game.gamePlayers.size < gameOptions.minPlayers) WaitingPhase(game, gameOptions, textFormatter) else GameCountdownPhase(game, gameOptions, textFormatter) }
+    override val nextPhase = { if(!hasEnoughPlayers(game)) WaitingPhase(game, gameOptions, textFormatter) else GameCountdownPhase(game, gameOptions, textFormatter) }
+    private val notifySound = Sound.sound(SoundEvent.BLOCK_NOTE_BLOCK_HAT, Sound.Source.NEUTRAL, 10F, 1F)
     private lateinit var countdownTask: CountdownRunnable
 
     override fun start() {
         listenPhaseChangeCondition(EventListener.builder(GamePlayerPostJoinEvent::class.java)
-            .filter(GameFilter(game))) { it.game.gamePlayers.size < gameOptions.minPlayers }
+            .filter(GameFilter(game))) { !hasEnoughPlayers(it.game) }
         startCountdown()
     }
 
+    private fun hasEnoughPlayers(game: Game<out GamePlayer>): Boolean = game.gamePlayers.size >= gameOptions.minPlayers
+
     private fun startCountdown() {
-        val tickSound = Sound.sound(SoundEvent.BLOCK_NOTE_BLOCK_HAT, Sound.Source.NEUTRAL, 10F, 1F)
         countdownTask = Countdown.create(
-            gameOptions.countdownTime,
-            Duration.ofSeconds(1),
+            initialTime = gameOptions.countdownTime,
+            duration = Duration.ofSeconds(1),
             afterIncrementAction = {
-                if(it % 10 == 0 || it <= 5) {
-                    game.sendActionBar(MiniMessage.get().parse(textFormatter.formatMessage("The game will start in ${textFormatter.formatNumber(it)} seconds!")))
-                    game.playSound(tickSound, Sound.Emitter.self())
-                }
+                if(it % 10 == 0 || it <= 5)
+                    notifyCountdown(it)
             },
             endingAction = { switchNextPhase() }
         )
+    }
+
+    private fun notifyCountdown(time: Int) {
+        game.sendActionBar(MiniMessage.get().parse(textFormatter.formatMessage("The game will start in ${textFormatter.formatNumber(time)} seconds!")))
+        game.playSound(notifySound, Sound.Emitter.self())
     }
 
     override fun end() {

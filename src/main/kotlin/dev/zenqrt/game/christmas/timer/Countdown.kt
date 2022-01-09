@@ -9,7 +9,6 @@ object Countdown {
                afterIncrementAction: (Int) -> Unit = {},
                endingAction: () -> Unit = {},
                cancelCondition: (Int) -> Boolean = { false }): CountdownRunnable = CountdownRunnable(initialTime, beforeIncrementAction, afterIncrementAction, endingAction, cancelCondition).also { it.repeat(duration).schedule() }
-
 }
 
 class CountdownRunnable(initialTime: Int,

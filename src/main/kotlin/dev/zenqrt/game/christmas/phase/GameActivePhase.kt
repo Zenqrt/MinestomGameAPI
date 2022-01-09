@@ -5,17 +5,23 @@ import dev.zenqrt.game.api.event.filter.GameFilter
 import dev.zenqrt.game.api.phase.GamePhase
 import dev.zenqrt.game.christmas.game.ChristmasGame
 import dev.zenqrt.game.christmas.game.GameOptions
+import dev.zenqrt.game.christmas.phase.trait.GameTimerBossBarPhaseTrait
 import dev.zenqrt.game.christmas.phase.trait.WorkstationPhaseTrait
 import net.minestom.server.event.EventListener
 
 class GameActivePhase(private val game: ChristmasGame, private val gameOptions: GameOptions) : GamePhase("active") {
+    override val nextPhase = { EndingPhase() }
+
     override fun start() {
         if(attemptForceEnd()) return
 
-        eventNode.addListener(EventListener.builder(GamePlayerPostLeaveEvent::class.java)
-            .filter(GameFilter(game))
-            .handler { attemptForceEnd() }
-            .build())
+        listenPhaseChangeCondition(EventListener.builder(GamePlayerPostLeaveEvent::class.java)
+            .filter(GameFilter(game))) { shouldForceEnd() }
+        registerTraits()
+    }
+
+    private fun registerTraits() {
+        addTrait(GameTimerBossBarPhaseTrait(this, gameOptions.gameTime))
         addTrait(WorkstationPhaseTrait(eventNode, game))
     }
 
@@ -23,7 +29,7 @@ class GameActivePhase(private val game: ChristmasGame, private val gameOptions: 
 
     private fun attemptForceEnd(): Boolean {
         if(shouldForceEnd()) {
-            end()
+            switchNextPhase()
             return true
         }
         return false
