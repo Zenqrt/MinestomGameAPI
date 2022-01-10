@@ -15,6 +15,7 @@ import net.minestom.server.entity.Player
 import net.minestom.server.event.Event
 import net.minestom.server.event.EventListener
 import net.minestom.server.event.EventNode
+import net.minestom.server.network.packet.server.play.ChangeGameStatePacket
 import world.cepi.kstom.event.listen
 
 class PlayerCountBossBarPhaseTrait(private val game: Game<out GamePlayer>,
@@ -25,14 +26,23 @@ class PlayerCountBossBarPhaseTrait(private val game: Game<out GamePlayer>,
     private val miniMessage = MiniMessage.get()
 
     override fun handleTrait() {
-        addBroadcastPlayerActivityListener<GamePlayerPostJoinEvent>("joined") { it.player }
-        addBroadcastPlayerActivityListener<GamePlayerPostLeaveEvent>("left") { it.player }
+        addUpdatePlayerListener<GamePlayerPostJoinEvent> {
+            sendSnowPackets(it.player)
+            broadcastActivityMessage(it.player, "joined")
+        }
+
+        addUpdatePlayerListener<GamePlayerPostLeaveEvent> { broadcastActivityMessage(it.player, "left") }
     }
 
-    private inline fun <reified T : GameEvent> addBroadcastPlayerActivityListener(activityMessage: String, crossinline player: (T) -> Player) {
-        addUpdatePlayerListener<T> {
-            it.game.sendMessage(miniMessage.parse(messageFormatter.formatMessage("${messageFormatter.formatUsername(player.invoke(it).username)} $activityMessage the game!")))
-        }
+    private fun sendSnowPackets(player: Player) {
+        player.sendPackets(
+            ChangeGameStatePacket(ChangeGameStatePacket.Reason.BEGIN_RAINING, 0F),
+            ChangeGameStatePacket(ChangeGameStatePacket.Reason.RAIN_LEVEL_CHANGE, 1F)
+        )
+    }
+
+    private fun broadcastActivityMessage(player: Player, activityMessage: String) {
+        game.sendMessage(miniMessage.parse(messageFormatter.formatMessage("${messageFormatter.formatUsername(player.username)} $activityMessage the game!")))
     }
 
     private inline fun <reified T : GameEvent> addUpdatePlayerListener(crossinline handler: (T) -> Unit) {

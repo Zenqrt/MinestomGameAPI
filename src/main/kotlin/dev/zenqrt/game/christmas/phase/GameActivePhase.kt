@@ -17,7 +17,9 @@ class GameActivePhase(private val game: ChristmasGame, private val gameOptions: 
 
         listenPhaseChangeCondition(EventListener.builder(GamePlayerPostLeaveEvent::class.java)
             .filter(GameFilter(game))) { shouldForceEnd() }
+
         registerTraits()
+        setupInstance()
     }
 
     private fun registerTraits() {
@@ -33,6 +35,12 @@ class GameActivePhase(private val game: ChristmasGame, private val gameOptions: 
             return true
         }
         return false
+    }
+
+    private fun setupInstance() {
+        val instance = game.instance
+        instance.timeRate = 4
+        instance.time = 0
     }
 
     override fun end() {

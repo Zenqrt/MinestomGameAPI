@@ -15,6 +15,6 @@ class ChristmasGame(id: Int) : Game<ChristmasGamePlayer>(id, ChristmasGamePlayer
 
     init {
         instance = christmasMapWorld.createInstanceContainer()
-        instance.timeRate = 4
+        instance.timeRate = 0
     }
 }

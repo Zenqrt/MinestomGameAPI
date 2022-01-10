@@ -2,6 +2,7 @@ package dev.zenqrt.game.api.registry
 
 import dev.zenqrt.game.api.Game
 import dev.zenqrt.game.api.GamePlayer
+import kotlin.random.Random
 
 open class MappedRegistryService<K,V> : RegistryService<K,V> {
     private val map = mutableMapOf<K,V>()
@@ -18,4 +19,10 @@ open class MappedRegistryService<K,V> : RegistryService<K,V> {
 
 }
 
-class GameRegistryService : MappedRegistryService<Int, Game<out GamePlayer>>()
+class GameRegistryService : MappedRegistryService<Int, Game<out GamePlayer>>() {
+    fun getAvailableId(): Int {
+        val id = Random.nextInt(100000)
+        find(id) ?: return getAvailableId()
+        return id
+    }
+}
