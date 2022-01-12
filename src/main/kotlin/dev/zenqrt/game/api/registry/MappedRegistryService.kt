@@ -18,11 +18,3 @@ open class MappedRegistryService<K,V> : RegistryService<K,V> {
     override fun find(key: K): V? = map[key]
 
 }
-
-class GameRegistryService : MappedRegistryService<Int, Game<out GamePlayer>>() {
-    fun getAvailableId(): Int {
-        val id = Random.nextInt(100000)
-        find(id) ?: return getAvailableId()
-        return id
-    }
-}

@@ -9,7 +9,7 @@ abstract class Game<T : GamePlayer>(val id: Int, private val gamePlayerHandler: 
     abstract val startingPhase: GamePhase
 
     fun startGame() {
-        startingPhase.start()
+        startingPhase.startPhase()
     }
 
     fun broadcast(handler: (Player) -> Unit) {

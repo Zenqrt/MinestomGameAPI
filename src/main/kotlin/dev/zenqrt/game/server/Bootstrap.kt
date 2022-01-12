@@ -1,6 +1,6 @@
 package dev.zenqrt.game.server
 
-import dev.zenqrt.game.api.MinestomGameAPI
+import dev.zenqrt.game.christmas.commands.GameCommand
 import dev.zenqrt.game.christmas.game.ChristmasGame
 import dev.zenqrt.game.christmas.registry.Registry
 import net.minestom.server.MinecraftServer
@@ -15,8 +15,9 @@ object MinestomServer {
 
         MojangAuth.init()
         OptifineSupport.enable()
-        MinestomGameAPI.init() // currently useless
         Registry.registerAll()
+
+        GameCommand.register()
 
         minecraftServer.start("0.0.0.0", 25565)
     }

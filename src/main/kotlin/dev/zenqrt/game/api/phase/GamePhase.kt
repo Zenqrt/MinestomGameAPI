@@ -11,14 +11,25 @@ abstract class GamePhase(name: String, open val eventNode: EventNode<Event> = Ev
     private val traits = mutableListOf<PhaseTrait>()
     private val globalEventNode = MinecraftServer.getGlobalEventHandler()
     private var _nextPhase: GamePhase? = null
+    var active = false
 
-    abstract fun start()
-    abstract fun end()
+    protected abstract fun start()
+    protected abstract fun end()
+
+    fun startPhase() {
+        start()
+        active = true
+    }
+
+    fun endPhase() {
+        end()
+        active = false
+    }
 
     fun switchNextPhase() {
         _nextPhase = nextPhase()
-        end()
-        _nextPhase?.start()
+        endPhase()
+        _nextPhase?.startPhase()
     }
 
     fun switchNextPhaseEventNode() {
