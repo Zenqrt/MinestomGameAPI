@@ -1,5 +1,6 @@
-package dev.zenqrt.game.api
+package dev.zenqrt.game.api.phase
 
+import dev.zenqrt.game.api.TestGame
 import dev.zenqrt.game.api.player.AccessibleFakePlayer
 import io.kotest.core.spec.style.ShouldSpec
 import io.kotest.matchers.collections.shouldNotContain
@@ -10,7 +11,7 @@ import net.minestom.server.MinecraftServer
 import net.minestom.server.entity.damage.DamageType
 import java.util.*
 
-class GameEventTests : ShouldSpec({
+class GamePhaseTests : ShouldSpec({
 
     beforeSpec { MinecraftServer.init() }
 

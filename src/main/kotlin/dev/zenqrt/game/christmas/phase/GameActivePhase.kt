@@ -3,14 +3,15 @@ package dev.zenqrt.game.christmas.phase
 import dev.zenqrt.game.api.event.GamePlayerPostLeaveEvent
 import dev.zenqrt.game.api.event.filter.GameFilter
 import dev.zenqrt.game.api.phase.GamePhase
+import dev.zenqrt.game.christmas.chat.ChristmasTextFormatter
 import dev.zenqrt.game.christmas.game.ChristmasGame
 import dev.zenqrt.game.christmas.game.GameOptions
 import dev.zenqrt.game.christmas.phase.trait.GameTimerBossBarPhaseTrait
 import dev.zenqrt.game.christmas.phase.trait.WorkstationPhaseTrait
 import net.minestom.server.event.EventListener
 
-class GameActivePhase(private val game: ChristmasGame, private val gameOptions: GameOptions) : GamePhase("active") {
-    override val nextPhase = { EndingPhase() }
+class GameActivePhase(private val game: ChristmasGame, private val gameOptions: GameOptions, private val textFormatter: ChristmasTextFormatter) : GamePhase("active") {
+    override val nextPhase = { EndingPhase(game, textFormatter) }
 
     override fun start() {
         if(attemptForceEnd()) return

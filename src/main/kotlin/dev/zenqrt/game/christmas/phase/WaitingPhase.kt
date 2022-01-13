@@ -8,7 +8,8 @@ import dev.zenqrt.game.api.phase.trait.MaxPlayerLimitCancelEventTrait
 import dev.zenqrt.game.christmas.chat.ChristmasTextFormatter
 import dev.zenqrt.game.christmas.game.ChristmasGame
 import dev.zenqrt.game.christmas.game.GameOptions
-import dev.zenqrt.game.christmas.phase.trait.PlayerCountBossBarPhaseTrait
+import dev.zenqrt.game.christmas.phase.trait.PlayerActivityPhaseTrait
+import dev.zenqrt.game.christmas.phase.trait.SnowEffectPhaseTrait
 import dev.zenqrt.game.christmas.phase.trait.TeleportToSpawnPhaseTrait
 import net.minestom.server.event.EventListener
 
@@ -27,7 +28,8 @@ class WaitingPhase(private val game: ChristmasGame, private val gameOptions: Gam
 
     private fun registerTraits() {
         addTrait(MaxPlayerLimitCancelEventTrait(eventNode, EventListener.builder(GamePlayerJoinEvent::class.java), game, gameOptions.maxPlayers))
-        addTrait(PlayerCountBossBarPhaseTrait(game, eventNode, textFormatter, gameOptions.maxPlayers))
+        addTrait(PlayerActivityPhaseTrait(game, eventNode, textFormatter, gameOptions.maxPlayers))
+        addTrait(SnowEffectPhaseTrait(eventNode, game))
         addTrait(TeleportToSpawnPhaseTrait(eventNode, game, game.instance, game.christmasMapWorld.spawnPos))
     }
 

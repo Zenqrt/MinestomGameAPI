@@ -6,7 +6,9 @@ import dev.zenqrt.game.api.chat.TextFormatter
 import dev.zenqrt.game.api.event.GamePlayerPostJoinEvent
 import dev.zenqrt.game.api.event.GamePlayerPostLeaveEvent
 import dev.zenqrt.game.api.event.filter.GameFilter
+import dev.zenqrt.game.api.event.filter.GamePlayerFilter
 import dev.zenqrt.game.api.event.trait.GameEvent
+import dev.zenqrt.game.api.event.trait.GamePlayerEvent
 import dev.zenqrt.game.api.phase.trait.PhaseTrait
 import net.kyori.adventure.bossbar.BossBar
 import net.kyori.adventure.text.Component
@@ -18,36 +20,29 @@ import net.minestom.server.event.EventNode
 import net.minestom.server.network.packet.server.play.ChangeGameStatePacket
 import world.cepi.kstom.event.listen
 
-class PlayerCountBossBarPhaseTrait(private val game: Game<out GamePlayer>,
-                                   private val eventNode: EventNode<Event>,
-                                   private val messageFormatter: TextFormatter<String>,
-                                   private val maxPlayers: Int) : PhaseTrait {
+class PlayerActivityPhaseTrait(private val game: Game<out GamePlayer>,
+                               private val eventNode: EventNode<Event>,
+                               private val messageFormatter: TextFormatter<String>,
+                               private val maxPlayers: Int) : PhaseTrait {
     private val playerCountBossBar = BossBar.bossBar(getPlayerCountText(game.gamePlayers.size), getPlayerCountProgress(game.gamePlayers.size), BossBar.Color.BLUE, BossBar.Overlay.PROGRESS)
     private val miniMessage = MiniMessage.get()
 
     override fun handleTrait() {
-        addUpdatePlayerListener<GamePlayerPostJoinEvent> {
-            sendSnowPackets(it.player)
-            broadcastActivityMessage(it.player, "joined")
-        }
-
-        addUpdatePlayerListener<GamePlayerPostLeaveEvent> { broadcastActivityMessage(it.player, "left") }
+        addBroadcastActivityListener<GamePlayerPostJoinEvent>("joined")
+        addBroadcastActivityListener<GamePlayerPostLeaveEvent>("left")
     }
 
-    private fun sendSnowPackets(player: Player) {
-        player.sendPackets(
-            ChangeGameStatePacket(ChangeGameStatePacket.Reason.BEGIN_RAINING, 0F),
-            ChangeGameStatePacket(ChangeGameStatePacket.Reason.RAIN_LEVEL_CHANGE, 1F)
-        )
+    private inline fun <reified T : GamePlayerEvent> addBroadcastActivityListener(activityMessage: String) {
+        addUpdatePlayerListener<T> { broadcastActivityMessage(it.player, activityMessage) }
     }
 
     private fun broadcastActivityMessage(player: Player, activityMessage: String) {
         game.sendMessage(miniMessage.parse(messageFormatter.formatMessage("${messageFormatter.formatUsername(player.username)} $activityMessage the game!")))
     }
 
-    private inline fun <reified T : GameEvent> addUpdatePlayerListener(crossinline handler: (T) -> Unit) {
+    private inline fun <reified T : GamePlayerEvent> addUpdatePlayerListener(crossinline handler: (T) -> Unit) {
         eventNode.listen<T> {
-            filters += GameFilter(game)
+            filters += GamePlayerFilter(game)
 
             handler {
                 handler(this)

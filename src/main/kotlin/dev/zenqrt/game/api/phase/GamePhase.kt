@@ -1,15 +1,15 @@
 package dev.zenqrt.game.api.phase
 
 import dev.zenqrt.game.api.phase.trait.PhaseTrait
-import net.minestom.server.MinecraftServer
 import net.minestom.server.event.Event
 import net.minestom.server.event.EventListener
 import net.minestom.server.event.EventNode
+import world.cepi.kstom.Manager
 
 abstract class GamePhase(name: String, open val eventNode: EventNode<Event> = EventNode.all(name), open val phaseChangeEventNode: EventNode<Event> = EventNode.all("$name-phase_change")) {
     open val nextPhase: () -> GamePhase? = { null }
     private val traits = mutableListOf<PhaseTrait>()
-    private val globalEventNode = MinecraftServer.getGlobalEventHandler()
+    private val globalEventNode = Manager.globalEvent
     private var _nextPhase: GamePhase? = null
     var active = false
 

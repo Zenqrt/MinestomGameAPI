@@ -21,7 +21,7 @@ import net.minestom.server.network.packet.server.play.UnlockRecipesPacket
 import java.time.Duration
 
 class GameCountdownPhase(private val game: ChristmasGame, gameOptions: GameOptions, private val textFormatter: ChristmasTextFormatter) : GamePhase("game_countdown") {
-    override val nextPhase = { GameActivePhase(game, gameOptions) }
+    override val nextPhase = { GameActivePhase(game, gameOptions, textFormatter) }
     private val spawnPosition = Pos(0.0, 0.0, 0.0)
     private val miniMessage = MiniMessage.get()
     private lateinit var countdownTask: CountdownRunnable

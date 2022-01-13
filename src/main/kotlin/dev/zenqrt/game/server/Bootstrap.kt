@@ -3,12 +3,15 @@ package dev.zenqrt.game.server
 import dev.zenqrt.game.christmas.commands.GameCommand
 import dev.zenqrt.game.christmas.game.ChristmasGame
 import dev.zenqrt.game.christmas.registry.Registry
+import dev.zenqrt.game.christmas.world.worlds.ChristmasMapWorld
 import net.minestom.server.MinecraftServer
 import net.minestom.server.extras.MojangAuth
 import net.minestom.server.extras.optifine.OptifineSupport
+import net.minestom.server.instance.InstanceContainer
 
 object MinestomServer {
-    lateinit var mainGame: ChristmasGame
+    lateinit var instanceContainer: InstanceContainer
+    lateinit var world: ChristmasMapWorld
 
     fun main(args: Array<String>) {
         val minecraftServer = MinecraftServer.init()
@@ -18,6 +21,9 @@ object MinestomServer {
         Registry.registerAll()
 
         GameCommand.register()
+
+        world = ChristmasMapWorld()
+        instanceContainer = world.createInstanceContainer()
 
         minecraftServer.start("0.0.0.0", 25565)
     }

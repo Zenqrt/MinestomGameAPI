@@ -14,10 +14,8 @@ import kotlinx.serialization.json.Json
 import net.minestom.server.coordinate.Pos
 import net.minestom.server.entity.Entity
 import net.minestom.server.event.Event
-import net.minestom.server.event.EventListener
 import net.minestom.server.event.EventNode
 import net.minestom.server.event.player.PlayerEntityInteractEvent
-import net.minestom.server.instance.Instance
 import world.cepi.kstom.event.listen
 import java.io.File
 

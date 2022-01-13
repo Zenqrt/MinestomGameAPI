@@ -13,6 +13,7 @@ import world.cepi.kstom.event.listen
 class EndingTestPhase(private val game: TestGame) : GamePhase("ending") {
 
     override fun start() {
+        println("START")
         listenPhaseChangeCondition(EventListener.builder(PlayerDeathEvent::class.java)
             .filter(GamePlayerFilter(game))) { true }
 
