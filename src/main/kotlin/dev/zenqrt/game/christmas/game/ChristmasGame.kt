@@ -16,7 +16,7 @@ class ChristmasGame(id: Int) : Game<ChristmasGamePlayer>(id, ChristmasGamePlayer
     val instance: Instance
 
     init {
-        instance = Manager.instance.createInstanceContainer()
+        instance = christmasMapWorld.createInstanceContainer()
         instance.timeRate = 0
     }
 

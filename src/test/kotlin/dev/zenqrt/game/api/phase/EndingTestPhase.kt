@@ -13,7 +13,6 @@ import world.cepi.kstom.event.listen
 class EndingTestPhase(private val game: TestGame) : GamePhase("ending") {
 
     override fun start() {
-        println("START")
         listenPhaseChangeCondition(EventListener.builder(PlayerDeathEvent::class.java)
             .filter(GamePlayerFilter(game))) { true }
 
@@ -21,11 +20,12 @@ class EndingTestPhase(private val game: TestGame) : GamePhase("ending") {
             filters += GameEntityPlayerFilter(game)
             handler { this.entity.isGlowing = true }
         }
+
         addTrait(TestPhaseTrait(game))
     }
 
     override fun end() {
-        removeAllEventNodes()
+        removePhaseEventNode()
         endTraits()
         game.gamePlayers.clear()
     }

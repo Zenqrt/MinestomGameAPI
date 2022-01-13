@@ -9,8 +9,12 @@ import net.minestom.server.world.DimensionType
 
 class ChristmasMapWorld : MinecraftWorld {
     override val spawnPos: Pos = Pos(-22.5, 65.0, 2.5)
-    override val dimensionType: DimensionType = DimensionType.builder(NamespaceID.from("christmas_map"))
-        .skylightEnabled(true)
-        .build()
+    override val dimensionType: DimensionType = DIMENSION_TYPE
     override val chunkLoader: IChunkLoader = AnvilLoader("./src/main/resources/worlds/christmas_map")
+
+    companion object {
+        val DIMENSION_TYPE: DimensionType = DimensionType.builder(NamespaceID.from("christmas_map"))
+            .skylightEnabled(true)
+            .build()
+    }
 }

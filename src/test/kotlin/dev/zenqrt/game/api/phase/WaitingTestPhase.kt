@@ -15,7 +15,7 @@ abstract class AbstractWaitingTestPhase(protected val game: TestGame) : GamePhas
     override val nextPhase = { EndingTestPhase(game) }
 
     init {
-        addAllEventNodes()
+        addPhaseEventNode()
     }
 
     override fun start() {
@@ -28,24 +28,14 @@ abstract class AbstractWaitingTestPhase(protected val game: TestGame) : GamePhas
 class WaitingTestPhase(game: TestGame) : AbstractWaitingTestPhase(game) {
     override fun end() {
         WaitingTestPhaseUtils.executeEnding(game)
-        switchAllNextPhaseEventNodes()
-        endTraits()
-    }
-}
-
-class WaitingTestPhaseOnlySwitchEventNode(game: TestGame) : AbstractWaitingTestPhase(game) {
-    override fun end() {
-        println("ENDING")
-        WaitingTestPhaseUtils.executeEnding(game)
         switchNextPhaseEventNode()
         endTraits()
     }
 }
 
-class WaitingTestPhaseOnlySwitchPhaseChangeEventNode(game: TestGame) : AbstractWaitingTestPhase(game) {
+class WaitingTestPhaseKeepEventNode(game: TestGame) : AbstractWaitingTestPhase(game) {
     override fun end() {
         WaitingTestPhaseUtils.executeEnding(game)
-        switchNextPhaseChangeEventNode()
         endTraits()
     }
 }
@@ -53,7 +43,7 @@ class WaitingTestPhaseOnlySwitchPhaseChangeEventNode(game: TestGame) : AbstractW
 class WaitingTestPhaseKeepTraits(game: TestGame) : AbstractWaitingTestPhase(game) {
     override fun end() {
         WaitingTestPhaseUtils.executeEnding(game)
-        switchAllNextPhaseEventNodes()
+        switchNextPhaseEventNode()
     }
 }
 
@@ -63,7 +53,6 @@ private object WaitingTestPhaseUtils {
     fun addPhaseChangeConditionListener(phase: GamePhase, game: TestGame) {
         phase.listenPhaseChangeCondition(EventListener.builder(GamePlayerPostJoinEvent::class.java)
             .filter(GameFilter(game))) {
-            println("EVENT")
             it.game.gamePlayers.size >= maxPlayers
         }
     }

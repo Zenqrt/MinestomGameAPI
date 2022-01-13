@@ -8,6 +8,7 @@ import net.minestom.server.MinecraftServer
 import net.minestom.server.extras.MojangAuth
 import net.minestom.server.extras.optifine.OptifineSupport
 import net.minestom.server.instance.InstanceContainer
+import world.cepi.kstom.Manager
 
 object MinestomServer {
     lateinit var instanceContainer: InstanceContainer
@@ -21,6 +22,8 @@ object MinestomServer {
         Registry.registerAll()
 
         GameCommand.register()
+
+        Manager.dimensionType.addDimension(ChristmasMapWorld.DIMENSION_TYPE)
 
         world = ChristmasMapWorld()
         instanceContainer = world.createInstanceContainer()

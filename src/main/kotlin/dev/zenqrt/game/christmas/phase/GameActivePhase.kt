@@ -45,7 +45,7 @@ class GameActivePhase(private val game: ChristmasGame, private val gameOptions: 
     }
 
     override fun end() {
-        switchAllNextPhaseEventNodes()
+        switchNextPhaseEventNode()
         endTraits()
     }
 }

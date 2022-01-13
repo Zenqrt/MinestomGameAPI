@@ -1,6 +1,5 @@
 package dev.zenqrt.game.christmas.world
 
-import net.minestom.server.MinecraftServer
 import net.minestom.server.coordinate.Pos
 import net.minestom.server.instance.IChunkLoader
 import net.minestom.server.instance.InstanceContainer

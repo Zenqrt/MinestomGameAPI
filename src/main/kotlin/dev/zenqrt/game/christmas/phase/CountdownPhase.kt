@@ -32,7 +32,7 @@ class CountdownPhase(override val eventNode: EventNode<Event>, private val game:
     private fun hasEnoughPlayers(game: Game<out GamePlayer>): Boolean = game.gamePlayers.size >= gameOptions.minPlayers
 
     private fun startCountdown() {
-        countdownTask = Countdown.create(
+        countdownTask = Countdown.schedule(
             initialTime = gameOptions.countdownTime,
             duration = Duration.ofSeconds(1),
             afterIncrementAction = {
@@ -50,7 +50,7 @@ class CountdownPhase(override val eventNode: EventNode<Event>, private val game:
 
     override fun end() {
         stopCountdown()
-        switchAllNextPhaseEventNodes()
+        switchNextPhaseEventNode()
     }
 
     private fun stopCountdown() {

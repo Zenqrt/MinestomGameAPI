@@ -17,7 +17,7 @@ class WaitingPhase(private val game: ChristmasGame, private val gameOptions: Gam
     override val nextPhase = { CountdownPhase(eventNode, game, gameOptions, textFormatter) }
 
     init {
-        addAllEventNodes()
+        addPhaseEventNode()
     }
 
     override fun start() {
@@ -34,6 +34,6 @@ class WaitingPhase(private val game: ChristmasGame, private val gameOptions: Gam
     }
 
     override fun end() {
-        switchNextPhaseChangeEventNode()
+
     }
 }

@@ -15,7 +15,7 @@ class GameTimerBossBarPhaseTrait(private val phase: GamePhase, private val time:
     private lateinit var countdownTask: CountdownRunnable
 
     override fun handleTrait() {
-        countdownTask = Countdown.create(
+        countdownTask = Countdown.schedule(
             initialTime = 300,
             duration = Duration.ofSeconds(1),
             beforeIncrementAction = { updateGameTimerBossBar(it) },

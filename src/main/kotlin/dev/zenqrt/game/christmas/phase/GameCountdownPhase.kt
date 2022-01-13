@@ -40,7 +40,7 @@ class GameCountdownPhase(private val game: ChristmasGame, gameOptions: GameOptio
     }
 
     private fun startCountdown() {
-        countdownTask = Countdown.create(
+        countdownTask = Countdown.schedule(
             10,
             Duration.ofSeconds(1),
             afterIncrementAction = { game.sendActionBar(miniMessage.parse(textFormatter.formatMessage("You can move in ${textFormatter.formatNumber(it)} seconds!"))) },
@@ -50,7 +50,7 @@ class GameCountdownPhase(private val game: ChristmasGame, gameOptions: GameOptio
 
     override fun end() {
         endCountdown()
-        switchAllNextPhaseEventNodes()
+        switchNextPhaseEventNode()
     }
 
     private fun endCountdown() {

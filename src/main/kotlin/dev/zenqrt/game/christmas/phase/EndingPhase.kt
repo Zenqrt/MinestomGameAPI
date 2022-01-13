@@ -20,7 +20,7 @@ class EndingPhase(private val game: ChristmasGame, private val textFormatter: Ch
     }
 
     private fun startCountdown() {
-        countdownTask = Countdown.create(
+        countdownTask = Countdown.schedule(
             initialTime = 10,
             duration = Duration.ofSeconds(1),
             endingAction = { switchNextPhase() }
@@ -29,7 +29,7 @@ class EndingPhase(private val game: ChristmasGame, private val textFormatter: Ch
 
     override fun end() {
         countdownTask.cancel()
-        removeAllEventNodes()
+        removePhaseEventNode()
         endTraits()
         teleportPlayersToLobby()
     }

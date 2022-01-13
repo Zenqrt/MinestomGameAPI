@@ -2,16 +2,14 @@ package dev.zenqrt.game.api.phase.trait
 
 import dev.zenqrt.game.TestUtils
 import dev.zenqrt.game.api.TestGame
-import dev.zenqrt.game.api.TestGamePlayer
 import dev.zenqrt.game.api.phase.WaitingTestPhase
-import dev.zenqrt.game.api.phase.WaitingTestPhaseOnlySwitchEventNode
-import dev.zenqrt.game.api.player.AccessibleFakePlayer
+import dev.zenqrt.game.api.phase.WaitingTestPhaseKeepEventNode
+import dev.zenqrt.game.api.phase.WaitingTestPhaseKeepTraits
 import io.kotest.core.spec.style.ShouldSpec
 import io.kotest.matchers.floats.shouldBeExactly
 import io.kotest.matchers.floats.shouldNotBeExactly
 import io.kotest.matchers.shouldBe
 import net.minestom.server.MinecraftServer
-import java.util.*
 
 class PhaseTraitTests : ShouldSpec({
 
@@ -41,18 +39,31 @@ class PhaseTraitTests : ShouldSpec({
         }
     }
 
-    context("WaitingTestPhaseOnlySwitchEventNode") {
+    context("WaitingTestPhaseKeepEventNode") {
         val game = TestGame()
-        val phase = WaitingTestPhaseOnlySwitchEventNode(game)
+        val phase = WaitingTestPhaseKeepEventNode(game)
         phase.startPhase()
         phase.switchNextPhase()
 
 
-        should("clear game players when 4 players join") {
-            for(i in 0 until 4) {
+        should("still set player health to 5F on join") {
+            val player = TestUtils.registerFakePlayer(game)
+            player.health shouldBeExactly 5F
+        }
+    }
+
+    context("WaitingTestPhaseKeepTraits") {
+        val game = TestGame()
+        val phase = WaitingTestPhaseKeepTraits(game)
+        phase.startPhase()
+        phase.switchNextPhase()
+
+        should("still keep player count at 4 players when trying to add a 5th player") {
+            for(i in 0 until 5) {
                 TestUtils.registerFakePlayer(game)
             }
-            game.gamePlayers.size shouldBe 0
+
+            game.gamePlayers.size shouldBe 4
         }
     }
 })
