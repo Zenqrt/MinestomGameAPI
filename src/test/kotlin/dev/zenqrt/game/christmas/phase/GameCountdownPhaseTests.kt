@@ -1,19 +1,17 @@
 package dev.zenqrt.game.christmas.phase
 
+import dev.zenqrt.game.christmas.chat.ChristmasTextFormatter
 import dev.zenqrt.game.christmas.game.ChristmasGame
 import io.kotest.core.spec.style.ShouldSpec
 import net.minestom.server.MinecraftServer
 
-class WaitingPhaseTests : ShouldSpec({
+class GameCountdownPhaseTests : ShouldSpec({
     beforeSpec { MinecraftServer.init() }
 
     val game = ChristmasGame(1)
-    val phase = game.startingPhase
+    val phase = GameCountdownPhase(game, game.gameOptions, ChristmasTextFormatter())
 
-    context("WaitingPhase") {
-        should("change phase when 4 players join") {
-
-        }
+    context("GameCountdownPhase") {
     }
 
 })

@@ -21,9 +21,13 @@ class WaitingPhase(private val game: ChristmasGame, private val gameOptions: Gam
     }
 
     override fun start() {
+        registerListeners()
+        registerTraits()
+    }
+
+    private fun registerListeners() {
         listenPhaseChangeCondition(EventListener.builder(GamePlayerPostJoinEvent::class.java)
             .filter(GameFilter(game))) { it.game.gamePlayers.size >= gameOptions.minPlayers }
-        registerTraits()
     }
 
     private fun registerTraits() {

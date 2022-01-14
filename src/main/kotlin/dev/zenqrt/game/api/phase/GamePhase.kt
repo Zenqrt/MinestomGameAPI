@@ -10,7 +10,7 @@ abstract class GamePhase(name: String, open val eventNode: EventNode<Event> = Ev
     open val nextPhase: () -> GamePhase? = { null }
     private val traits = mutableListOf<PhaseTrait>()
     private val globalEventNode = Manager.globalEvent
-    private var _nextPhase: GamePhase? = null
+    var _nextPhase: GamePhase? = null
     var active = false
 
     protected abstract fun start()
@@ -18,13 +18,13 @@ abstract class GamePhase(name: String, open val eventNode: EventNode<Event> = Ev
 
     fun startPhase() {
         start()
-        globalEventNode.addChild(phaseChangeEventNode)
+        addPhaseChangeEventNode()
         active = true
     }
 
     fun endPhase() {
         end()
-        globalEventNode.removeChild(phaseChangeEventNode)
+        removePhaseChangeEventNode()
         active = false
     }
 
@@ -35,8 +35,8 @@ abstract class GamePhase(name: String, open val eventNode: EventNode<Event> = Ev
     }
 
     fun switchNextPhaseEventNode() {
-        _nextPhase?.addPhaseEventNode()
         removePhaseEventNode()
+        _nextPhase?.addPhaseEventNode()
     }
 
     fun addTrait(trait: PhaseTrait)  {
@@ -57,9 +57,18 @@ abstract class GamePhase(name: String, open val eventNode: EventNode<Event> = Ev
         globalEventNode.addChild(eventNode)
     }
 
+    fun addPhaseChangeEventNode() {
+        globalEventNode.addChild(phaseChangeEventNode)
+    }
+
     fun removePhaseEventNode() {
         globalEventNode.removeChild(eventNode)
     }
+
+    fun removePhaseChangeEventNode() {
+        globalEventNode.removeChild(phaseChangeEventNode)
+    }
+
 
     inline fun <reified T : Event> listenPhaseChangeCondition(eventBuilder: EventListener.Builder<T>, crossinline condition: (T) -> Boolean) {
         phaseChangeEventNode.addListener(eventBuilder

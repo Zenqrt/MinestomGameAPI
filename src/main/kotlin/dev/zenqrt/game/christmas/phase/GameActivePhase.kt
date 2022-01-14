@@ -16,11 +16,15 @@ class GameActivePhase(private val game: ChristmasGame, private val gameOptions: 
     override fun start() {
         if(attemptForceEnd()) return
 
+        registerListeners()
+        registerTraits()
+
+        setupInstance()
+    }
+
+    private fun registerListeners() {
         listenPhaseChangeCondition(EventListener.builder(GamePlayerPostLeaveEvent::class.java)
             .filter(GameFilter(game))) { shouldForceEnd() }
-
-        registerTraits()
-        setupInstance()
     }
 
     private fun registerTraits() {

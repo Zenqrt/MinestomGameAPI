@@ -3,6 +3,7 @@ package dev.zenqrt.game.christmas.phase
 import dev.zenqrt.game.api.Game
 import dev.zenqrt.game.api.GamePlayer
 import dev.zenqrt.game.api.event.GamePlayerPostJoinEvent
+import dev.zenqrt.game.api.event.GamePlayerPostLeaveEvent
 import dev.zenqrt.game.api.event.filter.GameFilter
 import dev.zenqrt.game.api.phase.GamePhase
 import dev.zenqrt.game.christmas.chat.ChristmasTextFormatter
@@ -24,9 +25,13 @@ class CountdownPhase(override val eventNode: EventNode<Event>, private val game:
     private lateinit var countdownTask: CountdownRunnable
 
     override fun start() {
-        listenPhaseChangeCondition(EventListener.builder(GamePlayerPostJoinEvent::class.java)
-            .filter(GameFilter(game))) { !hasEnoughPlayers(it.game) }
+        registerListeners()
         startCountdown()
+    }
+
+    private fun registerListeners() {
+        listenPhaseChangeCondition(EventListener.builder(GamePlayerPostLeaveEvent::class.java)
+            .filter(GameFilter(game))) { !hasEnoughPlayers(it.game) }
     }
 
     private fun hasEnoughPlayers(game: Game<out GamePlayer>): Boolean = game.gamePlayers.size >= gameOptions.minPlayers
@@ -50,7 +55,10 @@ class CountdownPhase(override val eventNode: EventNode<Event>, private val game:
 
     override fun end() {
         stopCountdown()
-        switchNextPhaseEventNode()
+
+        if(_nextPhase is GameCountdownPhase) {
+            switchNextPhaseEventNode()
+        }
     }
 
     private fun stopCountdown() {
