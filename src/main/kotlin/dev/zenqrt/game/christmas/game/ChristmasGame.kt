@@ -10,8 +10,7 @@ import net.minestom.server.coordinate.Pos
 import net.minestom.server.instance.Instance
 import world.cepi.kstom.Manager
 
-class ChristmasGame(id: Int) : Game<ChristmasGamePlayer>(id, ChristmasGamePlayerHandler()) {
-    val gameOptions = GameOptions(1, 8, 30, 300)
+class ChristmasGame(id: Int, val gameOptions: GameOptions = GameOptions(1, 8, 30, 300)) : Game<ChristmasGamePlayer>(id, ChristmasGamePlayerHandler()) {
     override val startingPhase = WaitingPhase(this, gameOptions, ChristmasTextFormatter())
     val christmasMapWorld = ChristmasMapWorld()
     val instance: Instance

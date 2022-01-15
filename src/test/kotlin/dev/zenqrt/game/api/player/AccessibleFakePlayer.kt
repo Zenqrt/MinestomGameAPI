@@ -9,4 +9,10 @@ class AccessibleFakePlayer(uuid: UUID,
                            username: String,
                            spawnCallback: Consumer<FakePlayer>? = null,
                            option: FakePlayerOption = FakePlayerOption()
-) : FakePlayer(uuid, username, option, spawnCallback)
+) : FakePlayer(uuid, username, option, spawnCallback) {
+
+    companion object {
+        fun create(username: String): AccessibleFakePlayer = AccessibleFakePlayer(UUID.randomUUID(), username)
+    }
+
+}

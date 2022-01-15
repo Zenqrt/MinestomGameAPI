@@ -1,7 +1,7 @@
 package dev.zenqrt.game.christmas.item
 
-import dev.zenqrt.game.christmas.item.toy.WrappedPresentItem
-import dev.zenqrt.game.christmas.item.toy.WrappingColors
+import dev.zenqrt.game.christmas.item.toy.material.wrapping.WrappedPresentItem
+import dev.zenqrt.game.christmas.item.toy.material.wrapping.WrappingColors
 import dev.zenqrt.game.christmas.item.toy.material.plastic.WheelPlasticItem
 import net.minestom.server.item.ItemStack
 import net.minestom.server.tag.Tag

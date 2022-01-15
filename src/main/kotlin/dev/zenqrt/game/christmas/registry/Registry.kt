@@ -12,6 +12,6 @@ object Registry {
     private fun registerRecipes() {
         val manager = Manager.recipe
 
-//        manager.addRecipe(WheelPlasticMoldRecipe())
+        manager.addRecipe(WheelPlasticMoldRecipe())
     }
 }

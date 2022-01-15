@@ -85,7 +85,7 @@ class GameCountdownPhase(private val game: ChristmasGame, gameOptions: GameOptio
         val itemStack = ItemStack.builder(Material.LIGHT_GRAY_STAINED_GLASS_PANE).displayName(
             Component.empty()).build()
 
-        for(i in 3 until player.inventory.size) {
+        for(i in 3 until 36) {
             player.inventory.setItemStack(i, itemStack)
         }
     }

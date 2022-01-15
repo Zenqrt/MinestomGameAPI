@@ -6,6 +6,7 @@ import dev.zenqrt.game.api.event.GamePlayerPostJoinEvent
 import dev.zenqrt.game.api.event.GamePlayerPostLeaveEvent
 import dev.zenqrt.game.api.event.filter.GameFilter
 import dev.zenqrt.game.api.phase.GamePhase
+import dev.zenqrt.game.api.phase.trait.PhaseTrait
 import dev.zenqrt.game.christmas.chat.ChristmasTextFormatter
 import dev.zenqrt.game.christmas.game.ChristmasGame
 import dev.zenqrt.game.christmas.game.GameOptions
@@ -21,6 +22,7 @@ import java.time.Duration
 
 class CountdownPhase(override val eventNode: EventNode<Event>, private val game: ChristmasGame, private val gameOptions: GameOptions, private val textFormatter: ChristmasTextFormatter, private val callbackPhase: WaitingPhase) : GamePhase("countdown") {
     override val nextPhase = { if(!hasEnoughPlayers(game)) callbackPhase else GameCountdownPhase(game, gameOptions, textFormatter) }
+    override val traits = callbackPhase.traits
     private val notifySound = Sound.sound(SoundEvent.BLOCK_NOTE_BLOCK_HAT, Sound.Source.NEUTRAL, 10F, 1F)
     private lateinit var countdownTask: CountdownRunnable
 

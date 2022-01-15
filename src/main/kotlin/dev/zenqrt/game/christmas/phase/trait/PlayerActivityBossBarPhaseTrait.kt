@@ -25,7 +25,11 @@ class PlayerActivityBossBarPhaseTrait(private val game: Game<out GamePlayer>,
                                       private val eventNode: EventNode<Event>,
                                       private val messageFormatter: TextFormatter<String>,
                                       private val maxPlayers: Int) : PhaseTrait {
-    private val playerCountBossBar = BossBar.bossBar(getPlayerCountText(game.gamePlayers.size), getPlayerCountProgress(game.gamePlayers.size), BossBar.Color.BLUE, BossBar.Overlay.PROGRESS)
+    val playerCountBossBar = BossBar.bossBar(playerCountText, playerCountProgress, BossBar.Color.BLUE, BossBar.Overlay.PROGRESS)
+    val playerCountText: Component
+        get() = Component.text("Players: ${game.gamePlayers.size}/$maxPlayers")
+    private val playerCountProgress: Float
+        get() = game.gamePlayers.size.toFloat() / maxPlayers.toFloat()
 
     override fun handleTrait() {
         game.showBossBar(playerCountBossBar)
@@ -46,7 +50,7 @@ class PlayerActivityBossBarPhaseTrait(private val game: Game<out GamePlayer>,
 
     private inline fun <reified T : GamePlayerEvent> addUpdatePlayerListener(crossinline handler: (T) -> Unit) {
         eventNode.listen<T> {
-            filters += GamePlayerFilter(game)
+            filters += GameFilter(game)
 
             handler {
                 handler(this)
@@ -56,13 +60,9 @@ class PlayerActivityBossBarPhaseTrait(private val game: Game<out GamePlayer>,
     }
 
     private fun updatePlayerCountBossBar() {
-        val playerCount = game.gamePlayers.size
-        playerCountBossBar.name(getPlayerCountText(playerCount))
-        playerCountBossBar.progress(getPlayerCountProgress(playerCount))
+        playerCountBossBar.name(playerCountText)
+        playerCountBossBar.progress(playerCountProgress)
     }
-
-    private fun getPlayerCountText(playerCount: Int): Component = Component.text("Players: $playerCount/$maxPlayers")
-    private fun getPlayerCountProgress(playerCount: Int): Float = playerCount.toFloat() / maxPlayers.toFloat()
 
     override fun endTrait() {
         game.hideBossBar(playerCountBossBar)

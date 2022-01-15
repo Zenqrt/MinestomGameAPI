@@ -9,6 +9,6 @@ import net.minestom.server.entity.Player
 class GamePlayerPostLeaveEvent(override val game: Game<out GamePlayer>,
                                 override val gamePlayer: GamePlayer,
                                 private val playerEntity: Player
-) : GameEvent, GamePlayerEvent {
+) : GamePlayerEvent {
     override fun getPlayer(): Player = playerEntity
 }

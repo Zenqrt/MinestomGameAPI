@@ -3,24 +3,23 @@ package dev.zenqrt.game.christmas.phase.trait
 import dev.zenqrt.game.api.event.filter.GamePlayerFilter
 import dev.zenqrt.game.api.phase.trait.PhaseTrait
 import dev.zenqrt.game.christmas.game.ChristmasGame
-import dev.zenqrt.game.christmas.utils.teleport
+import dev.zenqrt.game.christmas.item.toy.material.metal.MetalItem
+import dev.zenqrt.game.christmas.item.toy.material.plastic.PlasticItem
 import dev.zenqrt.game.christmas.workstation.Workstation
 import dev.zenqrt.game.christmas.workstation.WorkstationInteractionBox
-import dev.zenqrt.game.christmas.workstation.handler.PaintingWorkstationHandler
-import dev.zenqrt.game.christmas.workstation.handler.SantaSleighWorkstationHandler
-import dev.zenqrt.game.christmas.workstation.handler.WorkstationHandler
+import dev.zenqrt.game.christmas.workstation.handler.*
+import dev.zenqrt.game.christmas.workstation.handler.impl.WorkstationHandlerImpl
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
-import net.minestom.server.coordinate.Pos
-import net.minestom.server.entity.Entity
+import net.minestom.server.coordinate.Vec
 import net.minestom.server.event.Event
 import net.minestom.server.event.EventNode
-import net.minestom.server.event.player.PlayerEntityInteractEvent
+import net.minestom.server.event.player.PlayerBlockInteractEvent
 import world.cepi.kstom.event.listen
 import java.io.File
 
 class WorkstationPhaseTrait(private val eventNode: EventNode<Event>, private val game: ChristmasGame) : PhaseTrait {
-    private val interactionEntities = mutableMapOf<Entity, Workstation>()
+    private val interactionBlocks = mutableMapOf<Vec, Workstation>()
 
     override fun handleTrait() {
         registerWorkstations()
@@ -28,8 +27,24 @@ class WorkstationPhaseTrait(private val eventNode: EventNode<Event>, private val
     }
 
     private fun registerWorkstations() {
-        registerWorkstation(fromJson("paint"), PaintingWorkstationHandler())
-        registerWorkstation(fromJson("santa_sleigh"), SantaSleighWorkstationHandler(game))
+        registerWorkstations(
+            "anvil" to AnvilWorkstationHandler(),
+            "collect_battery" to WorkstationHandlerImpl(),
+            "collect_metal" to ItemCollectionWorkstationHandler(MetalItem().createItemStack()),
+            "collect_plastic" to ItemCollectionWorkstationHandler(PlasticItem().createItemStack()),
+            "collect_stuffing" to WorkstationHandlerImpl(),
+            "crafting" to CraftingWorkstationHandler(),
+            "paint" to PaintingWorkstationHandler(),
+            "plastic_molding" to PlasticMolderWorkstationHandler(),
+            "santa_sleigh" to SantaSleighWorkstationHandler(game),
+            "stuffing" to StuffingWorkstationHandler(),
+            "woodcutting" to WoodcuttingWorkstationHandler(),
+            "wrapping" to WrappingWorkstationHandler()
+        )
+    }
+
+    private fun registerWorkstations(vararg pairs: Pair<String, WorkstationHandler>) {
+        pairs.forEach { registerWorkstation(fromJson(it.first), it.second) }
     }
 
     private fun registerWorkstation(interactionBoxes: List<WorkstationInteractionBox>, workstationHandler: WorkstationHandler) {
@@ -38,17 +53,27 @@ class WorkstationPhaseTrait(private val eventNode: EventNode<Event>, private val
 
     private fun registerWorkstation(workstation: Workstation) {
         val interactionBox = workstation.interactionBox
-        val interactionEntity = interactionBox.createInteractionEntity()
-        interactionEntity.teleport(game.instance, Pos(interactionBox.minX, interactionBox.minY, interactionBox.minZ))
-        interactionEntities[interactionEntity] = workstation
+
+        for(x in interactionBox.minX.toInt()..interactionBox.maxX.toInt()) {
+            for(y in interactionBox.minY.toInt()..interactionBox.maxY.toInt()) {
+                for(z in interactionBox.minZ.toInt()..interactionBox.maxZ.toInt()) {
+                    val pos = Vec(x.toDouble(), y.toDouble(), z.toDouble())
+                    if(game.instance.getBlock(pos).isAir) continue
+                    interactionBlocks[pos] = workstation
+                }
+            }
+        }
     }
 
     private fun fromJson(name: String): List<WorkstationInteractionBox> = Json.decodeFromString(File("./src/main/resources/workstations/$name.json").readText())
 
     private fun addInteractionListeners() {
-        eventNode.listen<PlayerEntityInteractEvent> {
+        eventNode.listen<PlayerBlockInteractEvent> {
             filters += GamePlayerFilter(game)
-            handler { interactionEntities[this.target]?.handler?.useStation(this.player) }
+            handler {
+                val workstation = interactionBlocks[this.blockPosition] ?: return@handler
+                workstation.handler.useStation(this.player)
+            }
         }
     }
 }

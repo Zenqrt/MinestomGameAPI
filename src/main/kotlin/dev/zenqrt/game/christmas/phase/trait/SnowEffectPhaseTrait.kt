@@ -11,6 +11,7 @@ import net.minestom.server.network.packet.server.play.ChangeGameStatePacket
 import world.cepi.kstom.event.listen
 
 class SnowEffectPhaseTrait(private val eventNode: EventNode<Event>, private val game: ChristmasGame) : PhaseTrait {
+
     override fun handleTrait() {
         eventNode.listen<GamePlayerPostJoinEvent> {
             filters += GameFilter(game)
@@ -19,9 +20,6 @@ class SnowEffectPhaseTrait(private val eventNode: EventNode<Event>, private val 
     }
 
     private fun sendSnowPackets(player: Player) {
-        player.sendPackets(
-            ChangeGameStatePacket(ChangeGameStatePacket.Reason.BEGIN_RAINING, 0F),
-            ChangeGameStatePacket(ChangeGameStatePacket.Reason.RAIN_LEVEL_CHANGE, 1F)
-        )
+
     }
 }

@@ -6,9 +6,8 @@ import net.minestom.server.event.EventListener
 import net.minestom.server.event.EventNode
 import world.cepi.kstom.Manager
 
-abstract class GamePhase(name: String, open val eventNode: EventNode<Event> = EventNode.all(name), open val phaseChangeEventNode: EventNode<Event> = EventNode.all("$name-phase_change")) {
+abstract class GamePhase(name: String, open val eventNode: EventNode<Event> = EventNode.all(name), open val phaseChangeEventNode: EventNode<Event> = EventNode.all("$name-phase_change"), open val traits: MutableList<PhaseTrait> = mutableListOf()) {
     open val nextPhase: () -> GamePhase? = { null }
-    private val traits = mutableListOf<PhaseTrait>()
     private val globalEventNode = Manager.globalEvent
     var _nextPhase: GamePhase? = null
     var active = false
@@ -68,7 +67,6 @@ abstract class GamePhase(name: String, open val eventNode: EventNode<Event> = Ev
     fun removePhaseChangeEventNode() {
         globalEventNode.removeChild(phaseChangeEventNode)
     }
-
 
     inline fun <reified T : Event> listenPhaseChangeCondition(eventBuilder: EventListener.Builder<T>, crossinline condition: (T) -> Boolean) {
         phaseChangeEventNode.addListener(eventBuilder

@@ -7,6 +7,7 @@ import dev.zenqrt.game.christmas.world.worlds.HalloweenLobbyWorld
 import net.minestom.server.MinecraftServer
 import net.minestom.server.entity.GameMode
 import net.minestom.server.event.player.PlayerLoginEvent
+import net.minestom.server.extras.MojangAuth
 import net.minestom.server.extras.optifine.OptifineSupport
 import net.minestom.server.instance.InstanceContainer
 import net.minestom.server.utils.NamespaceID
@@ -30,7 +31,7 @@ object MinestomServer {
         Manager.globalEvent.listenOnly<PlayerLoginEvent> {
             this.setSpawningInstance(instanceContainer)
             this.player.respawnPoint = world.spawnPos
-//            this.player.gameMode = GameMode.CREATIVE
+            this.player.gameMode = GameMode.CREATIVE
             this.player.isAllowFlying = true
             this.player.isFlying = true
         }
@@ -38,9 +39,9 @@ object MinestomServer {
         minecraftServer.start("0.0.0.0", 25565)
     }
 
-    fun registerAll() {
-        //        MojangAuth.init()
-//        OptifineSupport.enable()
+    private fun registerAll() {
+        MojangAuth.init()
+        OptifineSupport.enable()
         Registry.registerAll()
 
         GameCommand.register()

@@ -2,13 +2,16 @@ package dev.zenqrt.game.christmas.phase
 
 import dev.zenqrt.game.api.event.GamePlayerPostLeaveEvent
 import dev.zenqrt.game.api.event.filter.GameFilter
+import dev.zenqrt.game.api.event.filter.GamePlayerFilter
 import dev.zenqrt.game.api.phase.GamePhase
+import dev.zenqrt.game.api.phase.trait.CancelEventTrait
 import dev.zenqrt.game.christmas.chat.ChristmasTextFormatter
 import dev.zenqrt.game.christmas.game.ChristmasGame
 import dev.zenqrt.game.christmas.game.GameOptions
 import dev.zenqrt.game.christmas.phase.trait.GameTimerBossBarPhaseTrait
 import dev.zenqrt.game.christmas.phase.trait.WorkstationPhaseTrait
 import net.minestom.server.event.EventListener
+import net.minestom.server.event.inventory.InventoryPreClickEvent
 
 class GameActivePhase(private val game: ChristmasGame, private val gameOptions: GameOptions, private val textFormatter: ChristmasTextFormatter) : GamePhase("active") {
     override val nextPhase = { EndingPhase(game, textFormatter) }
@@ -30,6 +33,9 @@ class GameActivePhase(private val game: ChristmasGame, private val gameOptions: 
     private fun registerTraits() {
         addTrait(GameTimerBossBarPhaseTrait(game, this, gameOptions.gameTime))
         addTrait(WorkstationPhaseTrait(eventNode, game))
+        addTrait(CancelEventTrait(eventNode, EventListener.builder(InventoryPreClickEvent::class.java)
+            .filter(GamePlayerFilter(game))
+            .filter { it.slot >= 3 }))
     }
 
     private fun shouldForceEnd(): Boolean = game.gamePlayers.size > 1

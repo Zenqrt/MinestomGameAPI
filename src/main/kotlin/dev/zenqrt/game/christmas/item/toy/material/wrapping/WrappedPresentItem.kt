@@ -1,4 +1,4 @@
-package dev.zenqrt.game.christmas.item.toy
+package dev.zenqrt.game.christmas.item.toy.material.wrapping
 
 import dev.zenqrt.game.christmas.item.Item
 import dev.zenqrt.game.christmas.utils.PlayerHead

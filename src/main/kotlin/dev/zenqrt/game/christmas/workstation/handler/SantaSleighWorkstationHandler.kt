@@ -3,6 +3,7 @@ package dev.zenqrt.game.christmas.workstation.handler
 import dev.zenqrt.game.christmas.game.ChristmasGame
 import dev.zenqrt.game.christmas.item.Item
 import dev.zenqrt.game.christmas.item.Items
+import dev.zenqrt.game.christmas.utils.isItem
 import net.minestom.server.entity.Player
 import net.minestom.server.item.ItemStack
 
@@ -13,7 +14,7 @@ class SantaSleighWorkstationHandler(private val game: ChristmasGame) : Workstati
         incrementToysBuilt(player)
     }
 
-    private fun isWrappedPresent(itemStack: ItemStack): Boolean = itemStack.getTag(Item.ID_TAG) == Items.WRAPPED_PRESENT.id
+    private fun isWrappedPresent(itemStack: ItemStack): Boolean = itemStack.isItem(Items.WRAPPED_PRESENT)
 
     private fun consumeItemInHand(player: Player) {
         player.itemInMainHand = player.itemInMainHand.withAmount { it - 1 }
