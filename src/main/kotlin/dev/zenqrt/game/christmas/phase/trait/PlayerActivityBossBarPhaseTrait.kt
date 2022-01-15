@@ -18,26 +18,30 @@ import net.minestom.server.event.Event
 import net.minestom.server.event.EventListener
 import net.minestom.server.event.EventNode
 import net.minestom.server.network.packet.server.play.ChangeGameStatePacket
+import world.cepi.kstom.adventure.asMini
 import world.cepi.kstom.event.listen
 
-class PlayerActivityPhaseTrait(private val game: Game<out GamePlayer>,
-                               private val eventNode: EventNode<Event>,
-                               private val messageFormatter: TextFormatter<String>,
-                               private val maxPlayers: Int) : PhaseTrait {
+class PlayerActivityBossBarPhaseTrait(private val game: Game<out GamePlayer>,
+                                      private val eventNode: EventNode<Event>,
+                                      private val messageFormatter: TextFormatter<String>,
+                                      private val maxPlayers: Int) : PhaseTrait {
     private val playerCountBossBar = BossBar.bossBar(getPlayerCountText(game.gamePlayers.size), getPlayerCountProgress(game.gamePlayers.size), BossBar.Color.BLUE, BossBar.Overlay.PROGRESS)
-    private val miniMessage = MiniMessage.get()
 
     override fun handleTrait() {
-        addBroadcastActivityListener<GamePlayerPostJoinEvent>("joined")
-        addBroadcastActivityListener<GamePlayerPostLeaveEvent>("left")
+        game.showBossBar(playerCountBossBar)
+        addBroadcastActivityListener<GamePlayerPostJoinEvent>("joined") { it.player.showBossBar(playerCountBossBar) }
+        addBroadcastActivityListener<GamePlayerPostLeaveEvent>("left") { it.player.hideBossBar(playerCountBossBar) }
     }
 
-    private inline fun <reified T : GamePlayerEvent> addBroadcastActivityListener(activityMessage: String) {
-        addUpdatePlayerListener<T> { broadcastActivityMessage(it.player, activityMessage) }
+    private inline fun <reified T : GamePlayerEvent> addBroadcastActivityListener(activityMessage: String, crossinline handler: (T) -> Unit) {
+        addUpdatePlayerListener<T> {
+            handler(it)
+            broadcastActivityMessage(it.player, activityMessage)
+        }
     }
 
     private fun broadcastActivityMessage(player: Player, activityMessage: String) {
-        game.sendMessage(miniMessage.parse(messageFormatter.formatMessage("${messageFormatter.formatUsername(player.username)} $activityMessage the game!")))
+        game.sendMessage(messageFormatter.formatMessage("${messageFormatter.formatUsername(player.username)} $activityMessage the game!").asMini())
     }
 
     private inline fun <reified T : GamePlayerEvent> addUpdatePlayerListener(crossinline handler: (T) -> Unit) {
@@ -59,4 +63,8 @@ class PlayerActivityPhaseTrait(private val game: Game<out GamePlayer>,
 
     private fun getPlayerCountText(playerCount: Int): Component = Component.text("Players: $playerCount/$maxPlayers")
     private fun getPlayerCountProgress(playerCount: Int): Float = playerCount.toFloat() / maxPlayers.toFloat()
+
+    override fun endTrait() {
+        game.hideBossBar(playerCountBossBar)
+    }
 }

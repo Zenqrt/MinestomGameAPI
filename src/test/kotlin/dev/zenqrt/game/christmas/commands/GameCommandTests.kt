@@ -3,6 +3,7 @@ package dev.zenqrt.game.christmas.commands
 import dev.zenqrt.game.api.player.AccessibleFakePlayer
 import dev.zenqrt.game.christmas.game.ChristmasGame
 import dev.zenqrt.game.christmas.registry.GameRegistryService
+import dev.zenqrt.game.server.MinestomServer
 import io.kotest.core.spec.style.ShouldSpec
 import io.kotest.matchers.maps.shouldContainKey
 import io.kotest.matchers.shouldBe
@@ -16,6 +17,7 @@ class GameCommandTests : ShouldSpec({
 
     beforeSpec {
         MinecraftServer.init()
+        MinestomServer.registerWorlds()
         GameCommand.register()
     }
 

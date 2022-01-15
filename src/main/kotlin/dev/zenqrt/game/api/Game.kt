@@ -8,6 +8,8 @@ import net.minestom.server.entity.Player
 abstract class Game<T : GamePlayer>(val id: Int, private val gamePlayerHandler: GamePlayerHandler<T>): PacketGroupingAudience, GamePlayerHandler<T> by gamePlayerHandler {
     abstract val startingPhase: GamePhase
 
+    abstract fun forceStartGame(): Boolean
+
     fun startGame() {
         startingPhase.startPhase()
     }

@@ -20,7 +20,7 @@ class CountdownRunnable(initialTime: Int,
     private var time = initialTime
 
     override fun run() {
-        if(cancelCondition(time)) {
+        if(cancelCondition(time) || time <= 0) {
             endCountdown()
             return
         }
@@ -34,7 +34,7 @@ class CountdownRunnable(initialTime: Int,
     }
 
     private fun endCountdown() {
-        cancel()
         endingAction()
+        cancel()
     }
 }

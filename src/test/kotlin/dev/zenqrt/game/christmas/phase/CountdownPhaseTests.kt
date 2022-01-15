@@ -12,14 +12,22 @@ import java.util.*
 class CountdownPhaseTests : ShouldSpec({
     beforeSpec {
         MinecraftServer.init()
-        MinestomServer.registerAll()
+        MinestomServer.registerWorlds()
     }
 
     context("CountdownPhase") {
         val game = ChristmasGame(1)
-        val phase = CountdownPhase(game.startingPhase.eventNode, game, game.gameOptions, ChristmasTextFormatter())
-        phase.active = true
+        val phase = createPhase(game)
         phase.startPhase()
+
+        context("BossBar") {
+            should("show player boss bar") {
+                val fakePlayer = AccessibleFakePlayer(UUID.randomUUID(), "test_player")
+                val gamePlayer = game.createPlayer(fakePlayer)
+                game.insertPlayer(gamePlayer, fakePlayer, game)
+
+            }
+        }
 
         should("switch phases when min players are no longer reached") {
             val fakePlayer = AccessibleFakePlayer(UUID.randomUUID(), "test_player")
@@ -32,3 +40,5 @@ class CountdownPhaseTests : ShouldSpec({
     }
 
 })
+
+private fun createPhase(game: ChristmasGame): CountdownPhase = CountdownPhase(game.startingPhase.eventNode, game, game.gameOptions, ChristmasTextFormatter(), game.startingPhase)

@@ -1,5 +1,6 @@
 package dev.zenqrt.game.christmas.phase.trait
 
+import dev.zenqrt.game.api.GamePlayer
 import dev.zenqrt.game.api.phase.trait.PhaseTrait
 import dev.zenqrt.game.christmas.chat.ChristmasTextFormatter
 import dev.zenqrt.game.christmas.game.ChristmasGame
@@ -11,14 +12,20 @@ import net.minestom.server.entity.Player
 import world.cepi.kstom.adventure.asMini
 
 class DisplayLeaderboardPhaseTrait(private val game: ChristmasGame, private val textFormatter: ChristmasTextFormatter, private val leaderboardCalculator: ChristmasLeaderboardCalculator) : PhaseTrait {
-    override fun handleTrait() {
-        val players = leaderboardCalculator.calculateLeaderboard(game.gamePlayers)
-        val firstPlace = getLeaderboardPlayer(players, 0)
-        val secondPlace = getLeaderboardPlayer(players, 1)
-        val thirdPlace = getLeaderboardPlayer(players, 2)
+    lateinit var leaderboard: List<Pair<Player, ChristmasGamePlayer>>
 
-        game.sendMessage(buildLeaderboardMessage(firstPlace, secondPlace, thirdPlace, players))
-        sendTitles(firstPlace, secondPlace, thirdPlace, players)
+    override fun handleTrait() {
+        calculateLeaderboard()
+        val firstPlace = getLeaderboardPlayer(leaderboard, 0)
+        val secondPlace = getLeaderboardPlayer(leaderboard, 1)
+        val thirdPlace = getLeaderboardPlayer(leaderboard, 2)
+
+        game.sendMessage(buildLeaderboardMessage(firstPlace, secondPlace, thirdPlace, leaderboard))
+        sendTitles(firstPlace, secondPlace, thirdPlace, leaderboard)
+    }
+
+    fun calculateLeaderboard() {
+        leaderboard = leaderboardCalculator.calculateLeaderboard(game.gamePlayers)
     }
 
     private fun sendTitles(firstPlace: Player?, secondPlace: Player?, thirdPlace: Player?, leaderboard: List<Pair<Player, ChristmasGamePlayer>>) {

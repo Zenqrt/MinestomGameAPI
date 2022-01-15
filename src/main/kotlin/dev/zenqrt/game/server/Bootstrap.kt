@@ -3,7 +3,9 @@ package dev.zenqrt.game.server
 import dev.zenqrt.game.christmas.commands.GameCommand
 import dev.zenqrt.game.christmas.registry.Registry
 import dev.zenqrt.game.christmas.world.worlds.ChristmasMapWorld
+import dev.zenqrt.game.christmas.world.worlds.HalloweenLobbyWorld
 import net.minestom.server.MinecraftServer
+import net.minestom.server.entity.GameMode
 import net.minestom.server.event.player.PlayerLoginEvent
 import net.minestom.server.extras.optifine.OptifineSupport
 import net.minestom.server.instance.InstanceContainer
@@ -28,6 +30,9 @@ object MinestomServer {
         Manager.globalEvent.listenOnly<PlayerLoginEvent> {
             this.setSpawningInstance(instanceContainer)
             this.player.respawnPoint = world.spawnPos
+//            this.player.gameMode = GameMode.CREATIVE
+            this.player.isAllowFlying = true
+            this.player.isFlying = true
         }
 
         minecraftServer.start("0.0.0.0", 25565)
@@ -35,11 +40,14 @@ object MinestomServer {
 
     fun registerAll() {
         //        MojangAuth.init()
-        OptifineSupport.enable()
+//        OptifineSupport.enable()
         Registry.registerAll()
 
         GameCommand.register()
+        registerWorlds()
+    }
 
+    fun registerWorlds() {
         Manager.dimensionType.addDimension(ChristmasMapWorld.DIMENSION_TYPE)
         Manager.biome.addBiome(Biome.builder()
             .name(NamespaceID.from("snowy_plains"))

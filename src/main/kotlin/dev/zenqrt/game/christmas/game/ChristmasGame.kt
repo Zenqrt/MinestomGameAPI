@@ -11,7 +11,7 @@ import net.minestom.server.instance.Instance
 import world.cepi.kstom.Manager
 
 class ChristmasGame(id: Int) : Game<ChristmasGamePlayer>(id, ChristmasGamePlayerHandler()) {
-    val gameOptions = GameOptions(4, 8, 30, 300)
+    val gameOptions = GameOptions(1, 8, 30, 300)
     override val startingPhase = WaitingPhase(this, gameOptions, ChristmasTextFormatter())
     val christmasMapWorld = ChristmasMapWorld()
     val instance: Instance
@@ -19,6 +19,13 @@ class ChristmasGame(id: Int) : Game<ChristmasGamePlayer>(id, ChristmasGamePlayer
     init {
         instance = christmasMapWorld.createInstanceContainer()
         instance.timeRate = 0
+    }
+
+    override fun forceStartGame(): Boolean {
+        return if(startingPhase.active) {
+            startingPhase.switchNextPhase()
+            true
+        } else false
     }
 
     companion object {

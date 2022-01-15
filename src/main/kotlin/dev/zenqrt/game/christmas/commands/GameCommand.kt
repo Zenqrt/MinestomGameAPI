@@ -19,6 +19,7 @@ object GameCommand : Kommand({
     syntax(create) {
         val game = ChristmasGame.create()
         GameRegistryService.register(game.id, game)
+        game.startGame()
 
         context.returnData = CommandData()
             .set("id", game.id)
@@ -28,7 +29,7 @@ object GameCommand : Kommand({
     }
 
     syntax(start, id) {
-        executeGame(context[id], sender) { it.startGame() }
+        executeGame(context[id], sender) { it.forceStartGame() }
     }
 
     syntax(join, id).onlyPlayers {

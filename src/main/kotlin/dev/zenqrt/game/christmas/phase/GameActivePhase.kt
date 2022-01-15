@@ -28,7 +28,7 @@ class GameActivePhase(private val game: ChristmasGame, private val gameOptions: 
     }
 
     private fun registerTraits() {
-        addTrait(GameTimerBossBarPhaseTrait(this, gameOptions.gameTime))
+        addTrait(GameTimerBossBarPhaseTrait(game, this, gameOptions.gameTime))
         addTrait(WorkstationPhaseTrait(eventNode, game))
     }
 

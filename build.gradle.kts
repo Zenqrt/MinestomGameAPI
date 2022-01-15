@@ -22,7 +22,7 @@ dependencies {
     testImplementation("io.kotest:kotest-assertions-core:5.0.3")
     testImplementation("io.kotest:kotest-runner-junit5:5.0.3")
 
-    implementation("com.github.Minestom:Minestom:1e7110b")
+    implementation("com.github.Minestom:Minestom:374e534")
     implementation("net.kyori:adventure-text-minimessage:4.1.0-SNAPSHOT")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.2")
     implementation("com.github.Project-Cepi:KStom:b30449d")

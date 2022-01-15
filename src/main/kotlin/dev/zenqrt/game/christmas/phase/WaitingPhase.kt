@@ -8,21 +8,25 @@ import dev.zenqrt.game.api.phase.trait.MaxPlayerLimitCancelEventTrait
 import dev.zenqrt.game.christmas.chat.ChristmasTextFormatter
 import dev.zenqrt.game.christmas.game.ChristmasGame
 import dev.zenqrt.game.christmas.game.GameOptions
-import dev.zenqrt.game.christmas.phase.trait.PlayerActivityPhaseTrait
+import dev.zenqrt.game.christmas.phase.trait.PlayerActivityBossBarPhaseTrait
 import dev.zenqrt.game.christmas.phase.trait.SnowEffectPhaseTrait
 import dev.zenqrt.game.christmas.phase.trait.TeleportToSpawnPhaseTrait
 import net.minestom.server.event.EventListener
 
 class WaitingPhase(private val game: ChristmasGame, private val gameOptions: GameOptions, private val textFormatter: ChristmasTextFormatter) : GamePhase("waiting") {
-    override val nextPhase = { CountdownPhase(eventNode, game, gameOptions, textFormatter) }
+    override val nextPhase = { CountdownPhase(eventNode, game, gameOptions, textFormatter, this) }
+    var previouslyInitiated = false
 
     init {
         addPhaseEventNode()
     }
 
     override fun start() {
-        registerListeners()
-        registerTraits()
+        if(!previouslyInitiated) {
+            previouslyInitiated = true
+            registerListeners()
+            registerTraits()
+        }
     }
 
     private fun registerListeners() {
@@ -32,12 +36,11 @@ class WaitingPhase(private val game: ChristmasGame, private val gameOptions: Gam
 
     private fun registerTraits() {
         addTrait(MaxPlayerLimitCancelEventTrait(eventNode, EventListener.builder(GamePlayerJoinEvent::class.java), game, gameOptions.maxPlayers))
-        addTrait(PlayerActivityPhaseTrait(game, eventNode, textFormatter, gameOptions.maxPlayers))
+        addTrait(PlayerActivityBossBarPhaseTrait(game, eventNode, textFormatter, gameOptions.maxPlayers))
         addTrait(SnowEffectPhaseTrait(eventNode, game))
         addTrait(TeleportToSpawnPhaseTrait(eventNode, game, game.instance, game.christmasMapWorld.spawnPos))
     }
 
     override fun end() {
-
     }
 }
