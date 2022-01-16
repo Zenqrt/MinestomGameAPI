@@ -13,6 +13,7 @@ import dev.zenqrt.game.christmas.workstation.handler.impl.WorkstationHandlerImpl
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
 import net.minestom.server.coordinate.Vec
+import net.minestom.server.entity.Player
 import net.minestom.server.event.Event
 import net.minestom.server.event.EventNode
 import net.minestom.server.event.player.PlayerBlockInteractEvent
@@ -36,7 +37,7 @@ class WorkstationPhaseTrait(private val eventNode: EventNode<Event>, private val
             "collect_stuffing" to WorkstationHandlerImpl(),
             "crafting" to CraftingWorkstationHandler(),
             "paint" to PaintingWorkstationHandler(),
-            "plastic_molding" to PlasticMolderWorkstationHandler(),
+            "plastic_molding" to PlasticMolderWorkstationHandler(eventNode),
             "santa_sleigh" to SantaSleighWorkstationHandler(game),
             "stuffing" to StuffingWorkstationHandler(),
             "woodcutting" to WoodcuttingWorkstationHandler(),
@@ -71,6 +72,7 @@ class WorkstationPhaseTrait(private val eventNode: EventNode<Event>, private val
     private fun addInteractionListeners() {
         eventNode.listen<PlayerBlockInteractEvent> {
             filters += GamePlayerFilter(game)
+            filters += { this.hand == Player.Hand.MAIN }
             handler {
                 val workstation = interactionBlocks[this.blockPosition] ?: return@handler
                 workstation.handler.useStation(this.player)

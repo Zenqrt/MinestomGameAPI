@@ -35,7 +35,7 @@ class GameActivePhase(private val game: ChristmasGame, private val gameOptions: 
         addTrait(WorkstationPhaseTrait(eventNode, game))
         addTrait(CancelEventTrait(eventNode, EventListener.builder(InventoryPreClickEvent::class.java)
             .filter(GamePlayerFilter(game))
-            .filter { it.slot >= 3 }))
+            .filter { it.inventory?.inventoryType == null && it.slot >= 3 }))
     }
 
     private fun shouldForceEnd(): Boolean = game.gamePlayers.size > 1

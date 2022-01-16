@@ -29,9 +29,9 @@ object MinestomServer {
         Manager.globalEvent.listenOnly<PlayerLoginEvent> {
             this.setSpawningInstance(instanceContainer)
             this.player.respawnPoint = world.spawnPos
-            this.player.gameMode = GameMode.CREATIVE
-            this.player.isAllowFlying = true
-            this.player.isFlying = true
+            this.player.gameMode = GameMode.ADVENTURE
+//            this.player.isAllowFlying = true
+//            this.player.isFlying = true
         }
 
         minecraftServer.start("0.0.0.0", 25565)

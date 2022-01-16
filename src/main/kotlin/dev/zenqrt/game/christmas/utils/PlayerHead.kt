@@ -11,8 +11,7 @@ object PlayerHead {
     fun builder(textureUrl: String): ItemStackBuilder = ItemStack.builder(Material.PLAYER_HEAD)
         .meta(PlayerHeadMeta::class.java) {
             it.skullOwner(UUID.randomUUID())
-                .playerSkin(PlayerSkin(encodeTexture(textureUrl), "" +
-                        ""))
+                .playerSkin(PlayerSkin(encodeTexture(textureUrl), ""))
         }
 
     fun create(textureUrl: String): ItemStack = builder(textureUrl).build()
