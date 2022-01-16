@@ -76,8 +76,8 @@ class GameCountdownPhase(private val game: ChristmasGame, gameOptions: GameOptio
             false,
             false,
             false,
-            listOf("plastic"),
-            null
+            listOf("wheel"),
+            listOf("wheel")
         ))
     }
 

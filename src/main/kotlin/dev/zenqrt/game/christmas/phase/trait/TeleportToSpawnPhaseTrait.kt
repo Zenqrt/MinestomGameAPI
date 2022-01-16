@@ -6,9 +6,7 @@ import dev.zenqrt.game.api.phase.trait.PhaseTrait
 import dev.zenqrt.game.christmas.game.ChristmasGame
 import dev.zenqrt.game.christmas.utils.teleport
 import net.minestom.server.coordinate.Pos
-import net.minestom.server.entity.Player
 import net.minestom.server.event.Event
-import net.minestom.server.event.EventListener
 import net.minestom.server.event.EventNode
 import net.minestom.server.instance.Instance
 import world.cepi.kstom.event.listen

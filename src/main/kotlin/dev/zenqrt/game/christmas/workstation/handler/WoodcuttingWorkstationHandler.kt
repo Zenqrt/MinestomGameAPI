@@ -16,4 +16,8 @@ class WoodcuttingWorkstationHandler : WorkstationHandler {
     private fun unlockRecipes(player: Player) {
 
     }
+
+    private fun lockRecipes(player: Player) {
+
+    }
 }

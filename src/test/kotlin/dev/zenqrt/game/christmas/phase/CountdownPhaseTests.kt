@@ -1,5 +1,6 @@
 package dev.zenqrt.game.christmas.phase
 
+import dev.zenqrt.game.TestUtils
 import dev.zenqrt.game.api.player.AccessibleFakePlayer
 import dev.zenqrt.game.christmas.chat.ChristmasTextFormatter
 import dev.zenqrt.game.christmas.game.ChristmasGame
@@ -20,18 +21,8 @@ class CountdownPhaseTests : ShouldSpec({
         val phase = createPhase(game)
         phase.startPhase()
 
-        context("BossBar") {
-            should("show player boss bar") {
-                val fakePlayer = AccessibleFakePlayer(UUID.randomUUID(), "test_player")
-                val gamePlayer = game.createPlayer(fakePlayer)
-                game.insertPlayer(gamePlayer, fakePlayer, game)
-
-            }
-        }
-
         should("switch phases when min players are no longer reached") {
-            val fakePlayer = AccessibleFakePlayer(UUID.randomUUID(), "test_player")
-            val gamePlayer = game.createPlayer(fakePlayer)
+            val (fakePlayer, gamePlayer) = TestUtils.createChristmasGamePlayer(game, "test_player")
             game.insertPlayer(gamePlayer, fakePlayer, game)
             game.removePlayer(gamePlayer, fakePlayer, game)
 

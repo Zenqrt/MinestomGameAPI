@@ -1,5 +1,7 @@
 package dev.zenqrt.game.christmas.item
 
+import dev.zenqrt.game.christmas.item.toy.material.metal.MetalItem
+import dev.zenqrt.game.christmas.item.toy.material.plastic.PlasticItem
 import dev.zenqrt.game.christmas.item.toy.material.wrapping.WrappedPresentItem
 import dev.zenqrt.game.christmas.item.toy.material.wrapping.WrappingColors
 import dev.zenqrt.game.christmas.item.toy.material.plastic.WheelPlasticItem
@@ -26,6 +28,8 @@ interface Item {
 //}
 
 object Items {
+    val METAL = MetalItem()
+    val PLASTIC = PlasticItem()
     val PLASTIC_WHEEL = WheelPlasticItem()
     val WRAPPED_PRESENT = WrappedPresentItem("None", WrappingColors.RED)
 }

@@ -3,6 +3,7 @@ package dev.zenqrt.game.christmas.phase.trait
 import dev.zenqrt.game.api.event.filter.GamePlayerFilter
 import dev.zenqrt.game.api.phase.trait.PhaseTrait
 import dev.zenqrt.game.christmas.game.ChristmasGame
+import dev.zenqrt.game.christmas.item.Items
 import dev.zenqrt.game.christmas.item.toy.material.metal.MetalItem
 import dev.zenqrt.game.christmas.item.toy.material.plastic.PlasticItem
 import dev.zenqrt.game.christmas.workstation.Workstation
@@ -30,8 +31,8 @@ class WorkstationPhaseTrait(private val eventNode: EventNode<Event>, private val
         registerWorkstations(
             "anvil" to AnvilWorkstationHandler(),
             "collect_battery" to WorkstationHandlerImpl(),
-            "collect_metal" to ItemCollectionWorkstationHandler(MetalItem().createItemStack()),
-            "collect_plastic" to ItemCollectionWorkstationHandler(PlasticItem().createItemStack()),
+            "collect_metal" to ItemCollectionWorkstationHandler(Items.METAL.createItemStack()),
+            "collect_plastic" to ItemCollectionWorkstationHandler(Items.PLASTIC.createItemStack()),
             "collect_stuffing" to WorkstationHandlerImpl(),
             "crafting" to CraftingWorkstationHandler(),
             "paint" to PaintingWorkstationHandler(),

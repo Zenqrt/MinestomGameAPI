@@ -1,9 +1,7 @@
 package dev.zenqrt.game.server
 
 import dev.zenqrt.game.christmas.commands.GameCommand
-import dev.zenqrt.game.christmas.registry.Registry
 import dev.zenqrt.game.christmas.world.worlds.ChristmasMapWorld
-import dev.zenqrt.game.christmas.world.worlds.HalloweenLobbyWorld
 import net.minestom.server.MinecraftServer
 import net.minestom.server.entity.GameMode
 import net.minestom.server.event.player.PlayerLoginEvent
@@ -42,7 +40,6 @@ object MinestomServer {
     private fun registerAll() {
         MojangAuth.init()
         OptifineSupport.enable()
-        Registry.registerAll()
 
         GameCommand.register()
         registerWorlds()

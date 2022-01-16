@@ -1,15 +1,9 @@
 package dev.zenqrt.game.christmas.recipe
 
-import dev.zenqrt.game.christmas.item.toy.material.plastic.PlasticItem
-import dev.zenqrt.game.christmas.item.toy.material.plastic.WheelPlasticItem
-import net.minestom.server.entity.Player
+import dev.zenqrt.game.christmas.item.Items
 import net.minestom.server.item.ItemStack
-import net.minestom.server.network.packet.server.play.DeclareRecipesPacket
-import net.minestom.server.recipe.StonecutterRecipe
-import net.minestom.server.tag.Tag
 
-open class PlasticMoldRecipe(recipeId: String, ingredient: DeclareRecipesPacket.Ingredient, result: ItemStack) : StonecutterRecipe(recipeId, "plastic_mold", ingredient, result) {
-    override fun shouldShow(player: Player): Boolean = if(player.openInventory != null) player.openInventory!!.hasTag(Tag.String("plastic_molder_station")) else false
-}
+open class PlasticRecipe(override val id: String, override val ingredient: ItemStack,
+                         override val result: ItemStack) : SingleRecipe
 
-class WheelPlasticMoldRecipe : PlasticMoldRecipe("wheel", DeclareRecipesPacket.Ingredient(listOf(PlasticItem().createItemStack())), WheelPlasticItem().createItemStack())
+class WheelPlasticRecipe : PlasticRecipe("plastic_wheel", Items.PLASTIC.createItemStack(), Items.PLASTIC_WHEEL.createItemStack())
