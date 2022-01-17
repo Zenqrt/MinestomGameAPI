@@ -1,23 +1,11 @@
 package dev.zenqrt.game.christmas.workstation.handler
 
-import net.minestom.server.entity.Player
-import net.minestom.server.inventory.Inventory
-import net.minestom.server.inventory.InventoryType
+import dev.zenqrt.game.christmas.recipe.SledWoodRecipe
+import net.minestom.server.event.Event
+import net.minestom.server.event.EventNode
 
-class WoodcuttingWorkstationHandler : WorkstationHandler {
-    private val inventoryUI: Inventory
-        get() = Inventory(InventoryType.STONE_CUTTER, "Woodcutting Station")
-
-    override fun useStation(player: Player) {
-        unlockRecipes(player)
-        player.openInventory(inventoryUI)
-    }
-
-    private fun unlockRecipes(player: Player) {
-
-    }
-
-    private fun lockRecipes(player: Player) {
-
-    }
+class WoodcuttingWorkstationHandler(eventNode: EventNode<Event>) : SingleRecipeWorkstationHandler("Woodcutting Station", eventNode) {
+    override val recipes = listOf(
+        SledWoodRecipe()
+    )
 }

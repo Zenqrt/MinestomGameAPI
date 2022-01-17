@@ -16,7 +16,7 @@ import net.minestom.server.item.ItemStack
 import net.minestom.server.item.Material
 import world.cepi.kstom.event.listenOnly
 
-class SingleCraftingInventory(title: Component, val recipes: List<SingleRecipe>) : Inventory(InventoryType.CHEST_5_ROW, title) {
+class SingleCraftingInventory(title: Component, private val recipes: List<SingleRecipe>) : Inventory(InventoryType.CHEST_5_ROW, title) {
     constructor(title: String, recipes: List<SingleRecipe>) : this(Component.text(title), recipes)
 
     init {
@@ -58,6 +58,13 @@ class SingleCraftingInventory(title: Component, val recipes: List<SingleRecipe>)
         setOutput(ItemStack.AIR)
     }
 
+    private fun returnOutputItem(player: Player) {
+        val output = getOutput()
+        if(output.isAir) return
+
+        player.inventory.addItemStack(output)
+    }
+
     private fun displayRecipes(inventory: Inventory, input: ItemStack) {
         if(input.isAir) {
             clearRecipeShowcase()
@@ -75,7 +82,7 @@ class SingleCraftingInventory(title: Component, val recipes: List<SingleRecipe>)
         }
     }
 
-    fun clearRecipeShowcase() {
+    private fun clearRecipeShowcase() {
         iterateRecipeShowcase {
             this.setItemStack(it, ItemStack.AIR)
             true
@@ -107,7 +114,11 @@ class SingleCraftingInventory(title: Component, val recipes: List<SingleRecipe>)
         }
 
         it.listenOnly<InventoryCloseEvent> {
-            this.inventory?.let { inventory -> (inventory as SingleCraftingInventory).returnInputItem(this.player) }
+            this.inventory?.let { inventory ->
+                val craftingInventory = inventory as SingleCraftingInventory
+                craftingInventory.returnInputItem(this.player)
+                craftingInventory.returnOutputItem(this.player)
+            }
         }
     }
 

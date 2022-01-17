@@ -30,18 +30,18 @@ class WorkstationPhaseTrait(private val eventNode: EventNode<Event>, private val
 
     private fun registerWorkstations() {
         registerWorkstations(
-            "anvil" to AnvilWorkstationHandler(),
+            "anvil" to AnvilWorkstationHandler(eventNode),
             "collect_battery" to WorkstationHandlerImpl(),
             "collect_metal" to ItemCollectionWorkstationHandler(Items.METAL.createItemStack()),
             "collect_plastic" to ItemCollectionWorkstationHandler(Items.PLASTIC.createItemStack()),
             "collect_stuffing" to WorkstationHandlerImpl(),
             "crafting" to CraftingWorkstationHandler(),
-            "paint" to PaintingWorkstationHandler(),
+            "paint" to PaintingWorkstationHandler(eventNode),
             "plastic_molding" to PlasticMolderWorkstationHandler(eventNode),
             "santa_sleigh" to SantaSleighWorkstationHandler(game),
             "stuffing" to StuffingWorkstationHandler(),
-            "woodcutting" to WoodcuttingWorkstationHandler(),
-            "wrapping" to WrappingWorkstationHandler()
+            "woodcutting" to WoodcuttingWorkstationHandler(eventNode),
+            "wrapping" to WrappingWorkstationHandler(eventNode)
         )
     }
 

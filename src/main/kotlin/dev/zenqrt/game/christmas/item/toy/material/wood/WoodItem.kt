@@ -1,7 +1,7 @@
 package dev.zenqrt.game.christmas.item.toy.material.wood
 
 import dev.zenqrt.game.christmas.item.Item
-import dev.zenqrt.game.christmas.item.toy.material.Paintable
+import dev.zenqrt.game.christmas.item.toy.material.paint.Paintable
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.NamedTextColor
 import net.kyori.adventure.text.format.TextDecoration
@@ -15,19 +15,4 @@ class WoodItem : Item {
             Component.text("Wood", NamedTextColor.GOLD)
                 .decoration(TextDecoration.ITALIC, false)
         ).build()
-}
-
-class SledWoodItem : Item, Paintable {
-    override val id = "wood_sled"
-    override val model = ItemStack.builder(Material.OAK_BOAT)
-        .displayName(
-            Component.text("Sled", NamedTextColor.GOLD)
-                .decoration(TextDecoration.ITALIC, false)
-        ).build()
-    override val paintedModel = ItemStack.builder(Material.ACACIA_BOAT)
-        .displayName(
-            Component.text("Sled", NamedTextColor.GOLD)
-                .decoration(TextDecoration.ITALIC, false)
-        ).build()
-
 }

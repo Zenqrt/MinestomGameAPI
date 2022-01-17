@@ -1,9 +1,9 @@
 package dev.zenqrt.game.christmas.workstation.handler
 
-import net.minestom.server.entity.Player
+import dev.zenqrt.game.christmas.recipe.SingleRecipe
+import net.minestom.server.event.Event
+import net.minestom.server.event.EventNode
 
-class AnvilWorkstationHandler : WorkstationHandler {
-    override fun useStation(player: Player) {
-        TODO("Not yet implemented")
-    }
+class AnvilWorkstationHandler(eventNode: EventNode<Event>) : SingleRecipeWorkstationHandler("Anvil", eventNode) {
+    override val recipes = listOf<SingleRecipe>()
 }
