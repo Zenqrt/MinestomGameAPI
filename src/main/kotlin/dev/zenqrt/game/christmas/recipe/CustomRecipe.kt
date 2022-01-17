@@ -12,6 +12,12 @@ interface SingleRecipe : CustomRecipe {
     val result: ItemStack
 }
 
+interface DoubleRecipe : CustomRecipe {
+    val firstIngredient: ItemStack
+    val secondIngredient: ItemStack
+    val result: ItemStack
+}
+
 object CustomRecipes {
     val PLASTIC_WHEEL = register(WheelPlasticRecipe())
 
