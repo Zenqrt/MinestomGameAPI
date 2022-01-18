@@ -1,14 +1,14 @@
 package dev.zenqrt.game.christmas.item
 
-import dev.zenqrt.game.christmas.item.toy.material.metal.MetalItem
-import dev.zenqrt.game.christmas.item.toy.material.paint.PaintBucketItem
-import dev.zenqrt.game.christmas.item.toy.material.plastic.*
-import dev.zenqrt.game.christmas.item.toy.material.wood.PaintedSledWoodItem
-import dev.zenqrt.game.christmas.item.toy.material.wrapping.WrappedPresentItem
-import dev.zenqrt.game.christmas.item.toy.material.wrapping.WrappingColors
-import dev.zenqrt.game.christmas.item.toy.material.wood.SledWoodItem
-import dev.zenqrt.game.christmas.item.toy.material.wood.WoodItem
-import dev.zenqrt.game.christmas.item.toy.material.wrapping.PresentWrapItem
+import dev.zenqrt.game.christmas.item.material.metal.MetalItem
+import dev.zenqrt.game.christmas.item.material.paint.PaintBucketItem
+import dev.zenqrt.game.christmas.item.material.plastic.*
+import dev.zenqrt.game.christmas.item.material.wood.PaintedSledWoodItem
+import dev.zenqrt.game.christmas.item.material.wrapping.WrappedPresentItem
+import dev.zenqrt.game.christmas.item.material.wrapping.WrappingColors
+import dev.zenqrt.game.christmas.item.material.wood.SledWoodItem
+import dev.zenqrt.game.christmas.item.material.wood.WoodItem
+import dev.zenqrt.game.christmas.item.material.wrapping.PresentWrapItem
 import net.minestom.server.item.ItemStack
 import net.minestom.server.tag.Tag
 

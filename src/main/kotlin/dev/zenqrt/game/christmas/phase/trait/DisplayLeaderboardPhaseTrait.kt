@@ -4,17 +4,15 @@ import dev.zenqrt.game.api.phase.trait.PhaseTrait
 import dev.zenqrt.game.christmas.chat.ChristmasTextFormatter
 import dev.zenqrt.game.christmas.game.ChristmasGame
 import dev.zenqrt.game.christmas.game.ChristmasGamePlayer
-import dev.zenqrt.game.christmas.leaderboard.ChristmasLeaderboardCalculator
+import dev.zenqrt.game.christmas.leaderboard.Leaderboard
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.title.Title
 import net.minestom.server.entity.Player
 import world.cepi.kstom.adventure.asMini
 
-class DisplayLeaderboardPhaseTrait(private val game: ChristmasGame, private val textFormatter: ChristmasTextFormatter, private val leaderboardCalculator: ChristmasLeaderboardCalculator) : PhaseTrait {
-    lateinit var leaderboard: List<Pair<Player, ChristmasGamePlayer>>
-
+class DisplayLeaderboardPhaseTrait(private val game: ChristmasGame, private val textFormatter: ChristmasTextFormatter, private val leaderboard: Leaderboard<ChristmasGamePlayer>) : PhaseTrait {
     override fun handleTrait() {
-        calculateLeaderboard()
+        val leaderboard = leaderboard.leaderboard
         val firstPlace = getLeaderboardPlayer(leaderboard, 0)
         val secondPlace = getLeaderboardPlayer(leaderboard, 1)
         val thirdPlace = getLeaderboardPlayer(leaderboard, 2)
@@ -23,17 +21,20 @@ class DisplayLeaderboardPhaseTrait(private val game: ChristmasGame, private val 
         sendTitles(firstPlace, secondPlace, thirdPlace, leaderboard)
     }
 
-    fun calculateLeaderboard() {
-        leaderboard = leaderboardCalculator.calculateLeaderboard(game.gamePlayers)
-    }
-
     private fun sendTitles(firstPlace: Player?, secondPlace: Player?, thirdPlace: Player?, leaderboard: List<Pair<Player, ChristmasGamePlayer>>) {
         firstPlace?.showTitle(FIRST_PLACE_TITLE)
         secondPlace?.showTitle(SECOND_PLACE_TITLE)
         thirdPlace?.showTitle(THIRD_PLACE_TITLE)
 
-        leaderboard.subList(3, leaderboard.size - 1).forEachIndexed { index, pair ->
-            pair.first.showTitle(Title.title("$OTHER_PLACE_COLOR<bold>${index}th Place".asMini(), "<gray>Yikes...".asMini()))
+        if(leaderboard.size > 3) {
+            leaderboard.subList(3, leaderboard.size).forEachIndexed { index, pair ->
+                pair.first.showTitle(
+                    Title.title(
+                        "$OTHER_PLACE_COLOR<bold>${index}th Place".asMini(),
+                        "<gray>Yikes...".asMini()
+                    )
+                )
+            }
         }
     }
 

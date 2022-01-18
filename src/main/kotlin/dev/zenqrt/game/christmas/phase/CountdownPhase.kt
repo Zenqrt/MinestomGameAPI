@@ -21,7 +21,7 @@ import net.minestom.server.sound.SoundEvent
 import java.time.Duration
 
 class CountdownPhase(override val eventNode: EventNode<Event>, private val game: ChristmasGame, private val gameOptions: GameOptions, private val textFormatter: ChristmasTextFormatter, private val callbackPhase: WaitingPhase) : GamePhase("countdown") {
-    override val nextPhase = { if(!hasEnoughPlayers(game)) callbackPhase else GameCountdownPhase(game, gameOptions, textFormatter) }
+    override val nextPhase = { if(!hasEnoughPlayers(game)) callbackPhase else GameActivePhase(game, gameOptions, textFormatter) }
     override val traits = callbackPhase.traits
     private val notifySound = Sound.sound(SoundEvent.BLOCK_NOTE_BLOCK_HAT, Sound.Source.NEUTRAL, 10F, 1F)
     private lateinit var countdownTask: CountdownRunnable
@@ -58,7 +58,7 @@ class CountdownPhase(override val eventNode: EventNode<Event>, private val game:
     override fun end() {
         stopCountdown()
 
-        if(_nextPhase is GameCountdownPhase) {
+        if(_nextPhase is GameActivePhase) {
             switchNextPhaseEventNode()
             endTraits()
         }

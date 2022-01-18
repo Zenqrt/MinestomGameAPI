@@ -16,13 +16,5 @@ object PlayerHead {
 
     fun create(textureUrl: String): ItemStack = builder(textureUrl).build()
 
-    private fun encodeTexture(url: String): String = Base64.getEncoder().encodeToString("""
-        {
-            "textures": {
-                "SKIN": {
-                    "url": $url
-                }
-            }
-        }
-    """.trimIndent().encodeToByteArray())
+    private fun encodeTexture(url: String): String = Base64.getEncoder().encodeToString("{\"textures\":{\"SKIN\":{\"url\":\"$url\"}}}".encodeToByteArray())
 }

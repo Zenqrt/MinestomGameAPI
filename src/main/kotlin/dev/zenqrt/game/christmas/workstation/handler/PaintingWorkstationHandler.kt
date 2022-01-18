@@ -1,7 +1,7 @@
 package dev.zenqrt.game.christmas.workstation.handler
 
 import dev.zenqrt.game.christmas.item.Items
-import dev.zenqrt.game.christmas.item.toy.material.paint.Paintable
+import dev.zenqrt.game.christmas.item.material.paint.Paintable
 import net.minestom.server.event.Event
 import net.minestom.server.event.EventNode
 import net.minestom.server.item.ItemStack

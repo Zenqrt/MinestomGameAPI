@@ -4,7 +4,6 @@ import dev.zenqrt.game.api.event.GamePlayerPostJoinEvent
 import dev.zenqrt.game.api.event.filter.GameFilter
 import dev.zenqrt.game.api.phase.trait.PhaseTrait
 import dev.zenqrt.game.christmas.game.ChristmasGame
-import dev.zenqrt.game.christmas.utils.teleport
 import net.minestom.server.coordinate.Pos
 import net.minestom.server.event.Event
 import net.minestom.server.event.EventNode
@@ -15,7 +14,10 @@ class TeleportToSpawnPhaseTrait(private val eventNode: EventNode<Event>, private
     override fun handleTrait() {
         eventNode.listen<GamePlayerPostJoinEvent> {
             filters += GameFilter(game)
-            handler { this.player.teleport(instance, pos) }
+            handler {
+                println("teleporting...")
+                this.player.setInstance(instance, pos).thenRun { println("done teleporting") }
+            }
         }
     }
 }

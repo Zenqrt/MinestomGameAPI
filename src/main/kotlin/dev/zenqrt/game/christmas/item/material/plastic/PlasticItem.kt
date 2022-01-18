@@ -1,7 +1,7 @@
-package dev.zenqrt.game.christmas.item.toy.material.plastic
+package dev.zenqrt.game.christmas.item.material.plastic
 
 import dev.zenqrt.game.christmas.item.Item
-import dev.zenqrt.game.christmas.item.toy.material.paint.Paintable
+import dev.zenqrt.game.christmas.item.material.paint.Paintable
 import dev.zenqrt.game.christmas.utils.PlayerHead
 import dev.zenqrt.game.christmas.utils.singleStackingRule
 import net.kyori.adventure.text.Component
@@ -13,7 +13,7 @@ import world.cepi.kstom.adventure.noItalic
 
 class PlasticItem : Item {
     override val id = "plastic"
-    override val model = ItemStack.builder(Material.GREEN_CONCRETE)
+    override val model = ItemStack.builder(Material.WHITE_CONCRETE)
         .singleStackingRule()
         .displayName(
             Component.text("Plastic", NamedTextColor.GREEN).noItalic()

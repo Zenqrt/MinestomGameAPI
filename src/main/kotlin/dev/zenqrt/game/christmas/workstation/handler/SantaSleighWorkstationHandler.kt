@@ -1,27 +1,58 @@
 package dev.zenqrt.game.christmas.workstation.handler
 
 import dev.zenqrt.game.christmas.game.ChristmasGame
-import dev.zenqrt.game.christmas.item.Item
+import dev.zenqrt.game.christmas.game.ChristmasGamePlayer
 import dev.zenqrt.game.christmas.item.Items
+import dev.zenqrt.game.christmas.leaderboard.Leaderboard
+import dev.zenqrt.game.christmas.leaderboard.LeaderboardPlayer
+import dev.zenqrt.game.christmas.sidebar.ChristmasGameSidebarCreator
 import dev.zenqrt.game.christmas.utils.isItem
+import net.kyori.adventure.sound.Sound
 import net.minestom.server.entity.Player
-import net.minestom.server.item.ItemStack
+import net.minestom.server.scoreboard.Sidebar
+import net.minestom.server.sound.SoundEvent
 
-class SantaSleighWorkstationHandler(private val game: ChristmasGame) : WorkstationHandler {
+class SantaSleighWorkstationHandler(private val game: ChristmasGame, private val sidebarCreator: ChristmasGameSidebarCreator) : WorkstationHandler {
     override fun useStation(player: Player) {
-        if(!isWrappedPresent(player.itemInMainHand)) return
-        consumeItemInHand(player)
-        incrementToysBuilt(player)
-    }
+        if(!player.itemInMainHand.isItem(Items.WRAPPED_PRESENT)) return
 
-    private fun isWrappedPresent(itemStack: ItemStack): Boolean = itemStack.isItem(Items.WRAPPED_PRESENT)
+        consumeItemInHand(player)
+
+        val gamePlayer = incrementToysBuilt(player, game.gamePlayers[player]!!)
+        val leaderboardPlayer = LeaderboardPlayer(player, gamePlayer)
+
+        updateLeaderboard(leaderboardPlayer)
+        updateSidebars()
+        playSound(player)
+    }
 
     private fun consumeItemInHand(player: Player) {
         player.itemInMainHand = player.itemInMainHand.withAmount { it - 1 }
     }
     
-    private fun incrementToysBuilt(player: Player) {
-        val gamePlayer = game.gamePlayers[player]
-        gamePlayer?.copy(toysBuilt = gamePlayer.toysBuilt + 1)?.let { game.updatePlayer(it, player) }
+    private fun incrementToysBuilt(player: Player, gamePlayer: ChristmasGamePlayer): ChristmasGamePlayer = gamePlayer.copy(toysBuilt = gamePlayer.toysBuilt + 1).also {
+        game.updatePlayer(it, player)
+    }
+
+    private fun updateLeaderboard(player: LeaderboardPlayer<ChristmasGamePlayer>) {
+        game.leaderboard.updatePlayer(player)
+    }
+
+    private fun updateSidebars() {
+        sidebarCreator.updateTopLeaderboard()
+        game.leaderboard.leaderboard.forEach { updateSidebar(it) }
+    }
+
+    private fun updateSidebar(player: LeaderboardPlayer<ChristmasGamePlayer>) {
+        val sidebar = sidebarCreator.buildGameSidebar(player)
+        sidebar.addViewer(player.first)
+    }
+
+    private fun playSound(player: Player) {
+        player.playSound(SOUND_EFFECT, Sound.Emitter.self())
+    }
+
+    companion object {
+        val SOUND_EFFECT = Sound.sound(SoundEvent.ENTITY_PLAYER_LEVELUP, Sound.Source.MASTER, 100F, 2F)
     }
 }

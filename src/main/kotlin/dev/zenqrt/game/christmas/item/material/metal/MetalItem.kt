@@ -1,4 +1,4 @@
-package dev.zenqrt.game.christmas.item.toy.material.metal
+package dev.zenqrt.game.christmas.item.material.metal
 
 import dev.zenqrt.game.christmas.item.Item
 import dev.zenqrt.game.christmas.item.SingleStackingRule

@@ -1,4 +1,4 @@
-package dev.zenqrt.game.christmas.item.toy.material.paint
+package dev.zenqrt.game.christmas.item.material.paint
 
 import dev.zenqrt.game.christmas.item.Item
 import net.minestom.server.item.ItemStack

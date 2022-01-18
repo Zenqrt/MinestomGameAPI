@@ -1,8 +1,8 @@
 package dev.zenqrt.game.christmas.workstation.handler
 
 import dev.zenqrt.game.christmas.item.Items
-import dev.zenqrt.game.christmas.item.toy.material.wrapping.WrappedPresentItem
-import dev.zenqrt.game.christmas.item.toy.material.wrapping.WrappingColors
+import dev.zenqrt.game.christmas.item.material.wrapping.WrappedPresentItem
+import dev.zenqrt.game.christmas.item.material.wrapping.WrappingColors
 import dev.zenqrt.game.christmas.utils.wrappable
 import net.minestom.server.event.Event
 import net.minestom.server.event.EventNode

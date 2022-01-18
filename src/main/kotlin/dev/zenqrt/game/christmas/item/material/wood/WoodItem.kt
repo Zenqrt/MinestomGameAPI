@@ -1,7 +1,7 @@
-package dev.zenqrt.game.christmas.item.toy.material.wood
+package dev.zenqrt.game.christmas.item.material.wood
 
 import dev.zenqrt.game.christmas.item.Item
-import dev.zenqrt.game.christmas.item.toy.material.paint.Paintable
+import dev.zenqrt.game.christmas.item.material.paint.Paintable
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.NamedTextColor
 import net.kyori.adventure.text.format.TextDecoration
