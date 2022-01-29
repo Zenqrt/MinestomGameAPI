@@ -20,7 +20,7 @@ import net.minestom.server.event.EventNode
 import net.minestom.server.instance.Instance
 import java.io.File
 
-class ChristmasGame(id: Int, val gameOptions: GameOptions = GameOptions(1, 8, 30, 300)) : Game<ChristmasGamePlayer>(id, ChristmasGamePlayerHandler()) {
+class ChristmasGame(id: Int, val gameOptions: GameOptions = GameOptions(1, 8, 30, 300, 3)) : Game<ChristmasGamePlayer>(id, ChristmasGamePlayerHandler()) {
     val textFormatter = ChristmasTextFormatter()
     override val startingPhase = WaitingPhase(this, gameOptions, textFormatter)
     val christmasMapWorld = ChristmasMapWorld()
@@ -40,6 +40,7 @@ class ChristmasGame(id: Int, val gameOptions: GameOptions = GameOptions(1, 8, 30
     }
 
     override fun forceStartGame(): Boolean {
+        players.first().sendPackets()
         return if(startingPhase.active) {
             startingPhase.switchNextPhase()
             true
@@ -53,10 +54,11 @@ class ChristmasGame(id: Int, val gameOptions: GameOptions = GameOptions(1, 8, 30
             "collect_metal" to ItemCollectionWorkstationHandler(Items.METAL.createItemStack()),
             "collect_plastic" to ItemCollectionWorkstationHandler(Items.PLASTIC.createItemStack()),
             "collect_stuffing" to WorkstationHandlerImpl(),
+            "collect_wood" to ItemCollectionWorkstationHandler(Items.WOOD.createItemStack()),
             "crafting" to CraftingWorkstationHandler(workstationEventNode),
             "paint" to PaintingWorkstationHandler(workstationEventNode),
             "plastic_molding" to PlasticMolderWorkstationHandler(workstationEventNode),
-            "santa_sleigh" to SantaSleighWorkstationHandler(this, sidebarCreator),
+            "santa_sleigh" to SantaSleighWorkstationHandler(this),
             "stuffing" to StuffingWorkstationHandler(),
             "woodcutting" to WoodcuttingWorkstationHandler(workstationEventNode),
             "wrapping" to WrappingWorkstationHandler(workstationEventNode)

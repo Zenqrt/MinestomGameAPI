@@ -4,6 +4,7 @@ import dev.zenqrt.game.christmas.item.Item
 import dev.zenqrt.game.christmas.item.Items
 import dev.zenqrt.game.christmas.item.material.paint.Paintable
 import dev.zenqrt.game.christmas.item.material.wood.SledWood.DISPLAY_NAME
+import dev.zenqrt.game.christmas.item.material.wrapping.WrappableItem
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.NamedTextColor
 import net.minestom.server.item.ItemStack
@@ -14,14 +15,14 @@ class SledWoodItem : Item, Paintable {
     override val id = "wood_sled"
     override val model = ItemStack.builder(Material.OAK_BOAT)
         .displayName(DISPLAY_NAME).build()
-    override val paintedItem = PaintedSledWoodItem()
+    override val paintedItem = Items.PAINTED_WOOD_SLED
 
 }
 
-class PaintedSledWoodItem : Item {
+class PaintedSledWoodItem : WrappableItem() {
     override val id = "painted_wood_sled"
     override val model = ItemStack.builder(Material.ACACIA_BOAT)
-        .displayName(DISPLAY_NAME)
+        .displayName(Paintable.getPaintedDisplayName(DISPLAY_NAME))
         .build()
 }
 

@@ -9,6 +9,8 @@ import net.minestom.server.sound.SoundEvent
 
 class PlasticMolderWorkstationHandler(eventNode: EventNode<Event>) : SingleRecipeWorkstationHandler("Plastic Molding Station", eventNode) {
     override val recipes = listOf<PlasticRecipe>(
+        CustomRecipes.PLASTIC_MINECART_BODY,
+        CustomRecipes.PLASTIC_TRUCK_BODY,
         CustomRecipes.PLASTIC_WHEEL
     )
 

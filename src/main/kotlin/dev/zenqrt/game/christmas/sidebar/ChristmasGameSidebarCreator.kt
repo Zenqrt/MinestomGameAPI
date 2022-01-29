@@ -16,6 +16,7 @@ class ChristmasGameSidebarCreator(private val leaderboard: Leaderboard<Christmas
     private var topLeaderboard: LeaderboardPlayers<ChristmasGamePlayer>? = null
 
     fun buildGameSidebar(player: LeaderboardPlayer<ChristmasGamePlayer>): Sidebar = SidebarBuilder(title).also {
+        println("Sidebar: ${leaderboard.leaderboard[0].second.toysBuilt}")
         val isOnLeaderboard = topLeaderboard?.contains(player) ?: false
 
         it.addNewLines(leaderboardCache)

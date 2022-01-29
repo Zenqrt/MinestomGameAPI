@@ -7,8 +7,12 @@ import io.kotest.matchers.collections.shouldNotContain
 import io.kotest.matchers.floats.shouldBeExactly
 import io.kotest.matchers.ints.shouldBeExactly
 import io.kotest.matchers.shouldBe
+import net.kyori.adventure.text.Component
 import net.minestom.server.MinecraftServer
 import net.minestom.server.entity.damage.DamageType
+import net.minestom.server.event.entity.EntityDamageEvent
+import net.minestom.server.event.player.PlayerDeathEvent
+import world.cepi.kstom.Manager
 import java.util.*
 
 class GamePhaseTests : ShouldSpec({
@@ -51,14 +55,14 @@ class GamePhaseTests : ShouldSpec({
 
             should("set player glowing to true upon damage") {
                 val firstPlayer = game.gamePlayers.keys.first()
-                firstPlayer.damage(DamageType.VOID, 1F)
+                Manager.globalEvent.call(EntityDamageEvent(firstPlayer, DamageType.VOID, 1F, null))
 
                 firstPlayer.isGlowing shouldBe true
             }
 
             should("clear player list upon death") {
                 val firstPlayer = game.gamePlayers.keys.first()
-                firstPlayer.kill()
+                Manager.globalEvent.call(PlayerDeathEvent(firstPlayer, Component.empty(), Component.empty()))
 
                 game.gamePlayers.size shouldBeExactly 0
             }

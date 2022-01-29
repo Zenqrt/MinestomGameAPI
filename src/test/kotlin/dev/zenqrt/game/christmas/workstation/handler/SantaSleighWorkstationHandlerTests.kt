@@ -16,7 +16,7 @@ class SantaSleighWorkstationHandlerTests : ShouldSpec({
 
     context("SantaSleighWorkstationHandler") {
         val game = ChristmasGame(1)
-        val handler = SantaSleighWorkstationHandler(game, game.sidebarCreator)
+        val handler = SantaSleighWorkstationHandler(game)
         val (fakePlayer, gamePlayer) = TestUtils.createChristmasGamePlayer(game, "test_player")
 
         game.insertPlayer(gamePlayer, fakePlayer, game)

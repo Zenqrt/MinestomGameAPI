@@ -18,7 +18,7 @@ class Leaderboard<T : GamePlayer>(private val leaderboardCalculator: Leaderboard
 
         leaderboard.forEachIndexed { index, pair ->
             if(player.first == pair.first && !replaced) {
-                leaderboard[index] = pair
+                leaderboard[index] = player
                 replaced = true
             }
         }

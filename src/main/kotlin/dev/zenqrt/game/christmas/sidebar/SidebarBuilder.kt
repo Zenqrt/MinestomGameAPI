@@ -2,6 +2,7 @@ package dev.zenqrt.game.christmas.sidebar
 
 import net.kyori.adventure.text.Component
 import net.minestom.server.scoreboard.Sidebar
+import world.cepi.kstom.adventure.plainText
 
 class SidebarBuilder(val title: Component) {
     constructor(title: String) : this(Component.text(title))
@@ -21,6 +22,7 @@ class SidebarBuilder(val title: Component) {
     fun build(): Sidebar = Sidebar(title).also {
         lines.forEachIndexed { index, line ->
             it.createLine(Sidebar.ScoreboardLine(line.id, line.content, index))
+            println(line.content.plainText())
         }
     }
 

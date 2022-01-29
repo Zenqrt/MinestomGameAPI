@@ -19,6 +19,8 @@ interface DoubleRecipe : CustomRecipe {
 }
 
 object CustomRecipes {
+    val PLASTIC_MINECART_BODY = register(MinecartBodyPlasticRecipe())
+    val PLASTIC_TRUCK_BODY = register(TruckBodyPlasticRecipe())
     val PLASTIC_WHEEL = register(WheelPlasticRecipe())
 
     private fun <T : CustomRecipe> register(recipe: T): T = recipe.also { RecipeRegistryService.register(it.id, it) }

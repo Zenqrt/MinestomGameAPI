@@ -3,16 +3,13 @@ package dev.zenqrt.game.christmas.workstation.handler
 import dev.zenqrt.game.christmas.game.ChristmasGame
 import dev.zenqrt.game.christmas.game.ChristmasGamePlayer
 import dev.zenqrt.game.christmas.item.Items
-import dev.zenqrt.game.christmas.leaderboard.Leaderboard
 import dev.zenqrt.game.christmas.leaderboard.LeaderboardPlayer
-import dev.zenqrt.game.christmas.sidebar.ChristmasGameSidebarCreator
 import dev.zenqrt.game.christmas.utils.isItem
 import net.kyori.adventure.sound.Sound
 import net.minestom.server.entity.Player
-import net.minestom.server.scoreboard.Sidebar
 import net.minestom.server.sound.SoundEvent
 
-class SantaSleighWorkstationHandler(private val game: ChristmasGame, private val sidebarCreator: ChristmasGameSidebarCreator) : WorkstationHandler {
+class SantaSleighWorkstationHandler(private val game: ChristmasGame) : WorkstationHandler {
     override fun useStation(player: Player) {
         if(!player.itemInMainHand.isItem(Items.WRAPPED_PRESENT)) return
 
@@ -20,6 +17,8 @@ class SantaSleighWorkstationHandler(private val game: ChristmasGame, private val
 
         val gamePlayer = incrementToysBuilt(player, game.gamePlayers[player]!!)
         val leaderboardPlayer = LeaderboardPlayer(player, gamePlayer)
+
+        println("Toys: ${gamePlayer.toysBuilt}")
 
         updateLeaderboard(leaderboardPlayer)
         updateSidebars()
@@ -39,12 +38,12 @@ class SantaSleighWorkstationHandler(private val game: ChristmasGame, private val
     }
 
     private fun updateSidebars() {
-        sidebarCreator.updateTopLeaderboard()
+        game.sidebarCreator.updateTopLeaderboard()
         game.leaderboard.leaderboard.forEach { updateSidebar(it) }
     }
 
     private fun updateSidebar(player: LeaderboardPlayer<ChristmasGamePlayer>) {
-        val sidebar = sidebarCreator.buildGameSidebar(player)
+        val sidebar = game.sidebarCreator.buildGameSidebar(player)
         sidebar.addViewer(player.first)
     }
 

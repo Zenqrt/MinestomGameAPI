@@ -44,7 +44,7 @@ class GameActivePhase(private val game: ChristmasGame, private val gameOptions: 
         addTrait(WorkstationPhaseTrait(eventNode, game))
         addTrait(CancelEventTrait(eventNode, EventListener.builder(InventoryPreClickEvent::class.java)
             .filter(GamePlayerFilter(game))
-            .filter { it.inventory?.inventoryType == null && it.slot >= 3 }))
+            .filter { it.inventory?.inventoryType == null && it.slot >= gameOptions.availableSlots }))
     }
 
     private fun shouldForceEnd(): Boolean = game.gamePlayers.size > 1
@@ -78,10 +78,10 @@ class GameActivePhase(private val game: ChristmasGame, private val gameOptions: 
     }
 
     private fun fillInventory(player: Player) {
-        val itemStack = ItemStack.builder(Material.LIGHT_GRAY_STAINED_GLASS_PANE).displayName(
+        val itemStack = ItemStack.builder(Material.GRAY_STAINED_GLASS_PANE).displayName(
             Component.empty()).build()
 
-        for(i in 3 until 36) {
+        for(i in gameOptions.availableSlots until 36) {
             player.inventory.setItemStack(i, itemStack)
         }
     }

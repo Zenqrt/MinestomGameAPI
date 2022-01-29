@@ -23,7 +23,7 @@ class PaintedWheelPlasticItem : Item {
     override val id = "painted_plastic_wheel"
     override val model = PlayerHead.builder("http://textures.minecraft.net/texture/ddfe5a963869415340d2cec0f82d08df73dcb168428487b514aa8d4ec19fe2c")
         .singleStackingRule()
-        .displayName(DISPLAY_NAME)
+        .displayName(Paintable.getPaintedDisplayName(DISPLAY_NAME))
         .build()
 }
 
